@@ -3,7 +3,7 @@ import os
 HOST = 'localhost'
 PORT = 8080
 
-ENV = os.getenv('PYTHONENV', 'dev')
+ENV = os.getenv('PYTHONENV', 'prod')
 
 if ENV == 'prod':
     HOST = 'unicorn.ahst.fr'
