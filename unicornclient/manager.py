@@ -18,7 +18,7 @@ class Manager(object):
     def start(self):
         for thread in self.threads_to_start:
             print("starting routine " + str(thread))
-            module = importlib.import_module('unicorn_client.routines.' + thread)
+            module = importlib.import_module('unicornclient.routines.' + thread)
             routine = module.Routine()
             routine.sender = self.sender
             routine.daemon = True
