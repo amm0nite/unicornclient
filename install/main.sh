@@ -20,6 +20,7 @@ if [[ $pip_test -ne 0 ]]
 then
     curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
     python get-pip.py
+    rm get-pip.py
 fi
 
 pip install -U pip
@@ -39,4 +40,5 @@ stopasgroup=true"
 supervisor_path="/etc/supervisor/conf.d/"
 if [ -d "$supervisor_path" ]; then
     echo "$supervisor_configuration" > $supervisor_path/unicornclient.conf
+    supervisorctl update
 fi
