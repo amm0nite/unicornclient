@@ -3,18 +3,18 @@
 try:
     import unicornhat as unicorn
 except ImportError:
-    print "No unicornhat module"
+    print("No unicornhat module")
     import mock.unicornhat as unicorn
 
 try:
     import microdotphat as microdot
 except ImportError:
-    print "No microdotphat module"
+    print("No microdotphat module")
     import mock.microdotphat as microdot
 
 class Unicorn(object):
     def __init__(self):
-        print "Unicorn hat initialization"
+        print("Unicorn hat initialization")
         unicorn.set_layout(unicorn.AUTO)
         unicorn.rotation(0)
         unicorn.brightness(0.5)
@@ -52,7 +52,7 @@ class Unicorn(object):
 
 class Microdot(object):
     def __init__(self):
-        print "Microdot phat initialization"
+        print("Microdot phat initialization")
 
     def clear(self):
         microdot.clear()

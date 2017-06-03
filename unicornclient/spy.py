@@ -41,7 +41,7 @@ def get_ssid():
         ssid = subprocess.check_output('iwgetid -r', shell=True)
     except subprocess.CalledProcessError:
         return None
-    return ssid.strip()
+    return ssid.decode().strip()
 
 def get_temp():
     path = "/sys/class/thermal/thermal_zone0/temp"

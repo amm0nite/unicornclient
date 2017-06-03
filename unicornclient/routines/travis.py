@@ -2,7 +2,7 @@
 
 import time
 import threading
-import Queue
+import queue
 
 from .. import hat
 
@@ -10,7 +10,7 @@ class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.hat = hat.Unicorn()
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.status = {}
         self.just_updated = False
 
@@ -19,7 +19,7 @@ class Routine(threading.Thread):
             try:
                 data = self.queue.get_nowait()
                 status = data['status'] if 'status' in data else None
-            except Queue.Empty:
+            except queue.Empty:
                 status = None
 
             self.just_updated = False

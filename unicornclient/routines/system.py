@@ -1,11 +1,11 @@
 import threading
-import Queue
+import queue
 import subprocess
 
 class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.authorized_commands = ['reboot', 'halt']
 
     def run(self):

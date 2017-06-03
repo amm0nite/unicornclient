@@ -13,9 +13,9 @@ fi
 apt-get update
 
 apt-get install -y htop git rsync
-apt-get install -y python-dev supervisor
+apt-get install -y python3-dev supervisor
 
-pip_cmd='pip2.7'
+pip_cmd='pip3'
 
 pip_test=0
 command -v $pip_cmd || pip_test=1
@@ -23,7 +23,7 @@ command -v $pip_cmd || pip_test=1
 if [[ $pip_test -ne 0 ]]
 then
     curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
-    python get-pip.py
+    python3 get-pip.py
     rm get-pip.py
 fi
 
@@ -31,7 +31,7 @@ $pip_cmd install -U pip
 $pip_cmd install unicornclient
 
 start_script="#!/usr/bin/env bash
-pip install -U unicornclient
+$pip_cmd install -U unicornclient
 export PYTHONUNBUFFERED=1
 exec unicornclient"
 

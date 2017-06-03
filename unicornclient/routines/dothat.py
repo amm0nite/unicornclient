@@ -1,5 +1,5 @@
 import threading
-import Queue
+import queue
 
 from .. import hat
 
@@ -7,7 +7,7 @@ class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.hat = hat.Microdot()
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
 
     def run(self):
         while True:

@@ -11,7 +11,7 @@ class Sender(object):
         content = json.dumps(_clean_dict(reply))
         size = len(content)
         message = str(size) + ':' + content
-        self.socket.sendall(message)
+        self.socket.sendall(message.encode())
 
     def authenticate(self):
         payload = {

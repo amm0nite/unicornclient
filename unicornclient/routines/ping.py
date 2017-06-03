@@ -1,10 +1,10 @@
 import threading
-import Queue
+import queue
 
 class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.last_ping_id = None
 
     def run(self):
