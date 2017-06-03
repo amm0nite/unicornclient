@@ -2,6 +2,8 @@
 set -e
 set -x
 
+# RASPBIAN INSTALL SCRIPT
+
 if [[ $EUID -ne 0 ]]
 then
    echo "Please run as root"
@@ -10,11 +12,13 @@ fi
 
 apt-get update
 
-apt-get install -y htop git curl rsync
+apt-get install -y htop git rsync
 apt-get install -y python-dev supervisor
 
+pip_cmd='pip2.7'
+
 pip_test=0
-command -v pip || pip_test=1
+command -v $pip_cmd || pip_test=1
 
 if [[ $pip_test -ne 0 ]]
 then
@@ -23,13 +27,21 @@ then
     rm get-pip.py
 fi
 
-pip install -U pip
-pip install unicornclient
+$pip_cmd install -U pip
+$pip_cmd install unicornclient
+
+start_script="#!/usr/bin/env bash
+pip install -U unicornclient
+export PYTHONUNBUFFERED=1
+exec unicornclient"
+
+echo "$start_script" > /root/unicornclient.sh
+chmod u+x /root/unicornclient.sh
 
 supervisor_configuration="[program:unicornclient]
 user=root
 directory=/root
-command=unicornclient
+command=bash -c ""/root/unicornclient.sh""
 autostart=true
 autorestart=true
 redirect_stderr=true
