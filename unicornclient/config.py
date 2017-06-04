@@ -8,7 +8,7 @@ ENV = os.getenv('PYTHONENV', 'prod')
 if ENV == 'prod':
     HOST = 'unicorn.ahst.fr'
 
-DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system' ,'dothat']
+DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system']
 
 CUSTOM_ROUTINES = {
     '00000000dd275177': ['travis'],
