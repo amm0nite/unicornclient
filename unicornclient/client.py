@@ -29,7 +29,7 @@ def main():
             print('connected')
 
             _sender.socket = client
-            _sender.authenticate()
+            _manager.authenticate()
 
             while True:
                 data = client.recv(128)

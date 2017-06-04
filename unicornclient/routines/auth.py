@@ -1,20 +1,23 @@
 import threading
 import queue
 
+from .. import spy
+
 class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
-        self.last_ping_id = None
         self.manager = None
 
     def run(self):
         while True:
-            data = self.queue.get()
-
-            ping_id = data['id'] if 'id' in data else None
-            if ping_id:
-                self.last_ping_id = ping_id
-                self.manager.send({'type': 'pong', 'id': ping_id})
-
+            self.queue.get()
+            self.authenticate()
             self.queue.task_done()
+
+    def authenticate(self):
+        payload = {
+            'type':'auth',
+            'serial': spy.get_serial()
+        }
+        self.manager.send(payload)

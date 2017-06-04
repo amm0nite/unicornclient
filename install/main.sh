@@ -14,6 +14,7 @@ apt-get update
 
 apt-get install -y htop git rsync
 apt-get install -y python3-dev supervisor
+apt-get install -y python3-smbus
 
 pip_cmd='pip3'
 

@@ -1,5 +1,4 @@
 import json
-from . import spy
 
 class Sender(object):
     def __init__(self):
@@ -12,33 +11,6 @@ class Sender(object):
         size = len(content)
         message = str(size) + ':' + content
         self.socket.sendall(message.encode())
-
-    def authenticate(self):
-        payload = {
-            'type':'auth',
-            'serial': spy.get_serial()
-        }
-        self.send(payload)
-
-    def send_status(self):
-        payload = {
-            'type':'status',
-            'status': self.get_status()
-        }
-        self.send(payload)
-
-    def get_status(self):
-        status = {
-            'hostname': spy.get_hostname(),
-            'local_ip': spy.get_local_ip(),
-            'addresses': spy.get_macs(),
-            'ssid': spy.get_ssid(),
-            'temp': spy.get_temp(),
-            'signal_level': spy.get_signal_level(),
-            'written_kbytes': spy.get_written_kbytes(),
-            'uptime': spy.get_uptime()
-        }
-        return status
 
 
 def _clean_dict(data):

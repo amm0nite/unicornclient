@@ -20,7 +20,7 @@ class Manager(object):
             print("starting routine " + str(thread))
             module = importlib.import_module('unicornclient.routines.' + thread)
             routine = module.Routine()
-            routine.sender = self.sender
+            routine.manager = self
             routine.daemon = True
             routine.start()
             self.threads[thread] = routine
@@ -32,3 +32,9 @@ class Manager(object):
     def forward(self, thread_name, task):
         if thread_name in self.threads:
             self.threads[thread_name].queue.put(task)
+
+    def send(self, message):
+        self.sender.send(message)
+
+    def authenticate(self):
+        self.forward('auth', True)
