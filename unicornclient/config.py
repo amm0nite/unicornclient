@@ -11,7 +11,8 @@ if ENV == 'prod':
 DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system']
 
 CUSTOM_ROUTINES = {
-    '00000000dd275177': ['travis'],
-    '000000008a09c09c': ['sun'],
-    '0000000063ceb3e8': ['dothat'],
+    '00000000dd275177': ['travis'], # unicorn phat
+    '0000000063ceb3e8': ['dothat'], # microdot phat
+    '000000008a09c09c': [],         # unicorn hat
+    '00000000defe475f': [],         # octocam
 }
