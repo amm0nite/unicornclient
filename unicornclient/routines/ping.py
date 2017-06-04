@@ -6,6 +6,7 @@ class Routine(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
         self.last_ping_id = None
+        self.sender = None
 
     def run(self):
         while True:

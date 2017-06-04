@@ -4,13 +4,13 @@ try:
     import unicornhat as unicorn
 except ImportError:
     print("No unicornhat module")
-    import mock.unicornhat as unicorn
+    from .mock import unicornhat as unicorn
 
 try:
     import microdotphat as microdot
 except ImportError:
     print("No microdotphat module")
-    import mock.microdotphat as microdot
+    from .mock import microdotphat as microdot
 
 class Unicorn(object):
     def __init__(self):

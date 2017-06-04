@@ -5,6 +5,7 @@ class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
+        self.sender = None
 
     def run(self):
         while True:
