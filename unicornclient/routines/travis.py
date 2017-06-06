@@ -16,9 +16,12 @@ class Routine(threading.Thread):
 
     def run(self):
         while True:
+            got_task = False
+
             try:
                 data = self.queue.get_nowait()
                 status = data['status'] if 'status' in data else None
+                got_task = True
             except queue.Empty:
                 status = None
 
@@ -31,7 +34,7 @@ class Routine(threading.Thread):
             self.update()
             self.hat.show()
 
-            if status:
+            if got_task:
                 self.queue.task_done()
             time.sleep(0.2)
 
