@@ -1,16 +1,21 @@
 import json
+import threading
 
 class Sender(object):
     def __init__(self):
         self.socket = None
+        self.lock = threading.Lock()
 
     def send(self, reply):
         if not self.socket:
             return
+
         content = json.dumps(_clean_dict(reply))
         size = len(content)
         message = str(size) + ':' + content
-        self.socket.sendall(message.encode())
+
+        with self.lock:
+            self.socket.sendall(message.encode())
 
 
 def _clean_dict(data):
