@@ -1,11 +1,12 @@
 import importlib
+import logging
 
 from . import config
 from . import spy
 
 class Manager(object):
     def __init__(self, sender):
-        print('creating manager')
+        logging.info('creating manager')
         self.sender = sender
 
         self.threads_to_start = config.DEFAULT_ROUTINES
@@ -17,7 +18,7 @@ class Manager(object):
 
     def start(self):
         for thread in self.threads_to_start:
-            print("starting routine " + str(thread))
+            logging.info("starting routine " + str(thread))
             module = importlib.import_module('unicornclient.routines.' + thread)
             routine = module.Routine()
             routine.manager = self

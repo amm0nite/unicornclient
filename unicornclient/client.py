@@ -1,6 +1,7 @@
 import socket
 import time
 import random
+import logging
 
 from . import config
 from . import parser
@@ -25,10 +26,10 @@ def main():
         client = None
         try:
             address = (config.HOST, config.PORT)
-            print('connecting to ' + str(address))
+            logging.info('connecting to ' + str(address))
             client = socket.create_connection(address, TIMEOUT)
             client.settimeout(TIMEOUT)
-            print('connected')
+            logging.info('connected')
 
             _sender.socket = client
             _manager.authenticate()
@@ -43,10 +44,10 @@ def main():
                 _handler.handle(payload)
 
         except socket.error as err:
-            print('socket error')
-            print(err)
+            logging.error('socket error')
+            logging.error(err)
         except ShutdownException as err:
-            print('server shutdown')
+            logging.critical('server shutdown')
         finally:
             if client:
                 client.close()

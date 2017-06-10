@@ -1,20 +1,21 @@
 # pylint: disable=W0403,C0412,C0103
+import logging
 
 try:
     import unicornhat as unicorn
 except ImportError:
-    print("No unicornhat module")
+    logging.warning("No unicornhat module")
     from .mock import unicornhat as unicorn
 
 try:
     import microdotphat as microdot
 except ImportError:
-    print("No microdotphat module")
+    logging.warning("No microdotphat module")
     from .mock import microdotphat as microdot
 
 class Unicorn(object):
     def __init__(self):
-        print("Unicorn hat initialization")
+        logging.info("Unicorn hat initialization")
         unicorn.set_layout(unicorn.AUTO)
         unicorn.rotation(0)
         unicorn.brightness(0.5)
@@ -52,7 +53,7 @@ class Unicorn(object):
 
 class Microdot(object):
     def __init__(self):
-        print("Microdot phat initialization")
+        logging.info("Microdot phat initialization")
 
     def clear(self):
         microdot.clear()
