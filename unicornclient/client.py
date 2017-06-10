@@ -8,6 +8,8 @@ from . import handler
 from . import sender
 from . import manager
 
+TIMEOUT = 30
+
 class ShutdownException(Exception):
     pass
 
@@ -22,10 +24,10 @@ def main():
     while True:
         client = None
         try:
-            print('connecting to ' + str(config.HOST))
-            client = socket.socket()
-            client.settimeout(30)
-            client.connect((config.HOST, config.PORT))
+            address = (config.HOST, config.PORT)
+            print('connecting to ' + str(address))
+            client = socket.create_connection(address, TIMEOUT)
+            client.settimeout(TIMEOUT)
             print('connected')
 
             _sender.socket = client
@@ -33,7 +35,7 @@ def main():
 
             while True:
                 data = client.recv(128)
-                if data == '':
+                if not data:
                     raise ShutdownException()
                 payload = _parser.parse(data)
                 if not payload:
