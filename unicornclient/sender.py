@@ -6,16 +6,26 @@ class Sender(object):
         self.socket = None
         self.lock = threading.Lock()
 
-    def send(self, reply):
+    def send(self, reply, stream=None):
         if not self.socket:
             return
 
-        content = json.dumps(_clean_dict(reply))
-        size = len(content)
-        message = str(size) + ':' + content
+        header = json.dumps(_clean_dict(reply))
+        header_size = len(header.encode())
+        body = b''
+        body_size = 0
+
+        if stream:
+            body = stream.read()
+            body_size = len(body)
+
+        message_start = str(header_size) + ',' + str(body_size) + ':'
+        message = message_start.encode() + header.encode()
+        if body_size > 0:
+            message += body
 
         with self.lock:
-            self.socket.sendall(message.encode())
+            self.socket.sendall(message)
 
 
 def _clean_dict(data):
