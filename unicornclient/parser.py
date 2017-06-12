@@ -1,5 +1,6 @@
 import enum
 import json
+import logging
 
 from . import message
 
@@ -33,26 +34,32 @@ class Parser(object):
         data = self.remaining + data
         self.remaining = b''
 
-        for idx, byte_int in enumerate(data):
-            byte = bytes([byte_int])
+        try:
+            for idx, byte_int in enumerate(data):
+                byte = bytes([byte_int])
 
-            if self.state == State.HEADER_SIZE:
-                self.process_header_size(byte)
-            elif self.state == State.BODY_SIZE:
-                self.process_body_size(byte)
-            elif self.state == State.HEADER_DATA:
-                self.process_header_data(byte)
-            elif self.state == State.BODY_DATA:
-                self.process_body_data(byte)
-            elif self.state == State.DONE:
-                self.remaining = data[idx:]
-                break
+                if self.state == State.HEADER_SIZE:
+                    self.process_header_size(byte)
+                elif self.state == State.BODY_SIZE:
+                    self.process_body_size(byte)
+                elif self.state == State.HEADER_DATA:
+                    self.process_header_data(byte)
+                elif self.state == State.BODY_DATA:
+                    self.process_body_data(byte)
+                elif self.state == State.DONE:
+                    self.remaining = data[idx:]
+                    break
 
-        if self.message:
-            result = self.message
+            if self.message:
+                result = self.message
+                self.reset()
+                return result
+            return None
+
+        except ValueError as err:
+            logging.error(err)
             self.reset()
-            return result
-        return None
+            return None
 
     def process_header_size(self, byte):
         if byte == b',':
