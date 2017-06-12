@@ -34,8 +34,8 @@ class Manager(object):
         if thread_name in self.threads:
             self.threads[thread_name].queue.put(task)
 
-    def send(self, message, stream=None):
-        self.sender.send(message, stream)
+    def send(self, message):
+        self.sender.send(message)
 
     def authenticate(self):
         self.forward('auth', True)

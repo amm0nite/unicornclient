@@ -1,4 +1,3 @@
-import json
 import logging
 
 class MissingInfoException(Exception):
@@ -15,7 +14,7 @@ class Handler(object):
         self.sender = sender
 
     def handle(self, message):
-        payload = json.loads(message)
+        payload = message.header
 
         if 'type' not in payload:
             logging.warning("Ignored because no type")

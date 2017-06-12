@@ -2,6 +2,7 @@ import threading
 import queue
 
 from .. import spy
+from .. import message
 
 class Routine(threading.Thread):
     def __init__(self):
@@ -22,7 +23,7 @@ class Routine(threading.Thread):
             'status': status
         }
         self.manager.forward('dothat', {'text':status['temp']})
-        self.manager.send(payload)
+        self.manager.send(message.Message(payload))
 
     def get_status(self):
         status = {

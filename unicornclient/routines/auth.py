@@ -2,6 +2,7 @@ import threading
 import queue
 
 from .. import spy
+from .. import message
 
 class Routine(threading.Thread):
     def __init__(self):
@@ -20,4 +21,4 @@ class Routine(threading.Thread):
             'type':'auth',
             'serial': spy.get_serial()
         }
-        self.manager.send(payload)
+        self.manager.send(message.Message(payload))
