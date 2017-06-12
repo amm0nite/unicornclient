@@ -1,5 +1,5 @@
-
 import threading
+import logging
 
 class Sender(object):
     def __init__(self):
@@ -11,4 +11,7 @@ class Sender(object):
             return
 
         with self.lock:
-            self.socket.sendall(message.encode())
+            try:
+                self.socket.sendall(message.encode())
+            except OSError as err:
+                logging.error(err)
