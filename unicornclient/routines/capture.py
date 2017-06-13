@@ -2,11 +2,11 @@ import threading
 import queue
 import time
 import logging
+import io
 
 from .. import message
 
 try:
-    from io import BytesIO
     from picamera import PiCamera
 except ImportError:
     PiCamera = None
@@ -30,7 +30,7 @@ class Routine(threading.Thread):
         while True:
             self.queue.get()
 
-            pic_stream = BytesIO()
+            pic_stream = io.BytesIO()
             camera.capture(pic_stream, 'jpeg', resize=(320, 240))
             data = pic_stream.read()
             header = {'type':'capture'}
