@@ -32,7 +32,9 @@ class Routine(threading.Thread):
 
             pic_stream = io.BytesIO()
             camera.capture(pic_stream, 'jpeg', resize=(320, 240))
+            pic_stream.seek(0)
             data = pic_stream.read()
+
             header = {'type':'capture'}
             pic_message = message.Message(header)
             pic_message.set_body(data)
