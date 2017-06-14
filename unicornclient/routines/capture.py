@@ -22,6 +22,9 @@ class Routine(threading.Thread):
         if not PiCamera:
             return
 
+        start_message = message.Message({'type':'capture'})
+        self.manager.send(start_message)
+
         camera = PiCamera()
         camera.resolution = (1024, 768)
         camera.start_preview()
@@ -39,6 +42,5 @@ class Routine(threading.Thread):
             pic_message = message.Message(header)
             pic_message.set_body(data)
             self.manager.send(pic_message)
-            time.sleep(10)
 
             self.queue.task_done()
