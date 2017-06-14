@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/unicornclient.svg)](https://badge.fury.io/py/unicornclient)
+
 # unicornclient
 
 ## Raspbian installation
