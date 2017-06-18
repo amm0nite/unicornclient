@@ -16,4 +16,4 @@ DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system']
 if ENV == 'prod':
     LOG_LEVEL = logging.INFO
     HOST = 'unicorn.ahst.fr'
-    SSL_VERIFY = True
+    #SSL_VERIFY = True
