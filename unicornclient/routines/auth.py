@@ -19,6 +19,7 @@ class Routine(threading.Thread):
     def authenticate(self):
         payload = {
             'type':'auth',
-            'serial': spy.get_serial()
+            'serial': spy.get_serial(),
+            'machine_id': spy.get_machine_id(),
         }
         self.manager.send(message.Message(payload))

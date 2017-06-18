@@ -2,6 +2,12 @@ import os
 import socket
 import subprocess
 
+def get_machine_id():
+    machine_id = None
+    with open('/etc/machine-id', 'r') as id_file:
+        machine_id = id_file.read().strip()
+    return machine_id
+
 def get_serial():
     # Extract serial from cpuinfo file
     cpuserial = "0000000000000000"
