@@ -14,7 +14,7 @@ CLASSIFIERS = ['Development Status :: 3 - Alpha',
 
 setup(
     name             = 'unicornclient',
-    version          = '2.4.2',
+    version          = '3.0.0',
     author           = 'Pierre Cavan',
     author_email     = 'ammonite.myfox@gmail.com',
     description      = """Unicorn client""",
