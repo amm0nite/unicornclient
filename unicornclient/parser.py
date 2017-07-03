@@ -30,13 +30,27 @@ class Parser(object):
         self.header_size = 0
         self.body_size = 0
 
-    def parse(self, data):
-        data = self.remaining + data
-        self.remaining = b''
+    def feed(self, data):
+        self.remaining = self.remaining + data
+
+    def parse(self):
+        result = []
+        while True:
+            parsed = self.parse_one()
+            if parsed:
+                result.append(parsed)
+            if not self.remaining:
+                break
+        return result
+
+    def parse_one(self):
+        data = self.remaining
 
         try:
-            for idx, byte_int in enumerate(data):
+            last_index = 0
+            for index, byte_int in enumerate(data):
                 byte = bytes([byte_int])
+                last_index = index
 
                 if self.state == State.HEADER_SIZE:
                     self.process_header_size(byte)
@@ -47,17 +61,19 @@ class Parser(object):
                 elif self.state == State.BODY_DATA:
                     self.process_body_data(byte)
                 elif self.state == State.DONE:
-                    self.remaining = data[idx:]
+                    last_index -= 1
                     break
 
-            if self.message:
+            self.remaining = data[last_index+1:]
+
+            if self.state == State.DONE:
                 result = self.message
                 self.reset()
                 return result
             return None
 
         except ValueError as err:
-            logging.error(err)
+            logging.error(err, exc_info=True)
             self.reset()
             return None
 

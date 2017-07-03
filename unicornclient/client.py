@@ -48,10 +48,10 @@ def main():
                 data = client.recv(128)
                 if not data:
                     raise ShutdownException()
-                payload = _parser.parse(data)
-                if not payload:
-                    continue
-                _handler.handle(payload)
+                _parser.feed(data)
+                parsed = _parser.parse()
+                for message in parsed:
+                    _handler.handle(message)
 
         except socket.error as err:
             logging.error('socket error')
