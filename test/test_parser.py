@@ -1,6 +1,7 @@
 # pylint: disable=C0103
 
 import unittest
+import logging
 
 from unicornclient import parser
 from unicornclient import message
@@ -91,6 +92,24 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(second_parsed.header, self.message2.header)
         self.assertEqual(second_parsed.body, self.message2.body)
 
+    def test_bad_json_header(self):
+        logging.disable(logging.CRITICAL)
+        my_parser = parser.Parser()
+
+        data = self.message1.encode() + self.message2.encode()
+        data = data[:16] + b':' + data[17:]
+
+        my_parser.feed(data)
+        parsed = my_parser.parse()
+
+        self.assertEqual(len(parsed), 2)
+        first_parsed = parsed[0]
+        second_parsed = parsed[1]
+
+        self.assertIsNone(first_parsed.header)
+        self.assertEqual(first_parsed.body, self.message1.body)
+        self.assertEqual(second_parsed.header, self.message2.header)
+        self.assertEqual(second_parsed.body, self.message2.body)
 
 if __name__ == '__main__':
     unittest.main()

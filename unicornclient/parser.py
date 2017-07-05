@@ -35,12 +35,15 @@ class Parser(object):
 
     def parse(self):
         result = []
-        while True:
+        max_iterations = 100
+        iterations = 0
+        while iterations < max_iterations:
             parsed = self.parse_one()
             if parsed:
                 result.append(parsed)
             if not self.remaining:
                 break
+            iterations += 1
         return result
 
     def parse_one(self):
@@ -97,7 +100,7 @@ class Parser(object):
         self.buffer += byte
         if len(self.buffer) == self.header_size:
             self.message = message.Message()
-            header = json.loads(self.buffer.decode())
+            header = self._decode_header(self.buffer.decode())
             self.message.set_header(header)
             self.state = State.BODY_DATA if self.body_size > 0 else State.DONE
             self.buffer = b''
@@ -108,3 +111,10 @@ class Parser(object):
             self.message.set_body(self.buffer)
             self.state = State.DONE
             self.buffer = b''
+
+    def _decode_header(self, json_string):
+        try:
+            return json.loads(json_string)
+        except json.JSONDecodeError as err:
+            logging.warning('JSON decode error: ' + str(err))
+            return None
