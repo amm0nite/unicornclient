@@ -115,6 +115,6 @@ class Parser(object):
     def _decode_header(self, json_string):
         try:
             return json.loads(json_string)
-        except json.JSONDecodeError as err:
+        except ValueError as err:
             logging.warning('JSON decode error: ' + str(err))
             return None
