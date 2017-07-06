@@ -1,7 +1,8 @@
 import threading
+import datetime
+import logging
 import queue
 import time
-import logging
 import io
 
 from .. import message
@@ -31,6 +32,7 @@ class Routine(threading.Thread):
             self.queue.get()
 
             pic_stream = io.BytesIO()
+            camera.annotate_text = datetime.datetime.now().strftime("%H:%M:%S %d-%m-%Y")
             camera.capture(pic_stream, 'jpeg', resize=(320, 240))
             pic_stream.seek(0)
             data = pic_stream.read()
