@@ -14,7 +14,8 @@ apt-get update
 
 apt-get install -y htop git rsync
 apt-get install -y python3-dev supervisor
-apt-get install -y python3-smbus
+
+apt-get install -y python3-smbus || echo "python3-smbus not installed"
 
 pip_cmd='pip3'
 
@@ -53,5 +54,5 @@ stopasgroup=true"
 supervisor_path="/etc/supervisor/conf.d/"
 if [ -d "$supervisor_path" ]; then
     echo "$supervisor_configuration" > $supervisor_path/unicornclient.conf
-    supervisorctl update
+    supervisorctl update || echo "supervisor not updated"
 fi
