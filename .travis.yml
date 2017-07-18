@@ -4,4 +4,9 @@ python:
   - "3.4"
   - "3.6"
 
-script: "python3 -m unittest"
+install:
+  - "pip install pylint"
+  
+script:
+  - "pylint unicornclient"
+  - "python3 -m unittest"
