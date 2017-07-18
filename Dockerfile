@@ -8,4 +8,4 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y curl
 COPY install/main.sh .
 RUN bash main.sh
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
