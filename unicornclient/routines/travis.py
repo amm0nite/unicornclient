@@ -13,6 +13,7 @@ class Routine(threading.Thread):
         self.queue = queue.Queue()
         self.status = {}
         self.just_updated = False
+        self.pending_toggle = False
 
     def run(self):
         while True:
@@ -45,10 +46,12 @@ class Routine(threading.Thread):
 
         if status == 'passed' or status == 'fixed':
             return {'r':0, 'g':255, 'b':0}
-        if status == 'pending':
-            return {'r':255, 'g':255, 'b':0}
         if status in ['failed', 'still failing', 'broken', 'errored']:
             return {'r':255, 'g':0, 'b':0}
+        if status == 'pending':
+            self.pending_toggle = not self.pending_toggle
+            strength = 255 if self.pending_toggle else 0
+            return {'r':strength, 'g':strength, 'b':0}
 
         return {'r':0, 'g':0, 'b':255}
 
