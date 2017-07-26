@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# pylint: disable=C0326
+# pylint: disable=C0326, W0122, E0602
 
 from setuptools import setup, find_packages
 
@@ -12,9 +12,12 @@ CLASSIFIERS = ['Development Status :: 3 - Alpha',
                'Topic :: Software Development',
                'Topic :: System :: Hardware']
 
+with open('unicornclient/version.py', 'r') as version_file:
+    exec(version_file.read())
+
 setup(
     name             = 'unicornclient',
-    version          = '3.0.3',
+    version          = VERSION,
     author           = 'Pierre Cavan',
     author_email     = 'ammonite.myfox@gmail.com',
     description      = """Unicorn client""",
