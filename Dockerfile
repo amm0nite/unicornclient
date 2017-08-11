@@ -3,9 +3,13 @@ FROM debian:jessie
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y curl
+RUN apt-get update && apt-get upgrade -y && apt-get install -y curl python3-dev
 
-COPY install/main.sh .
-RUN bash main.sh
+RUN curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
+RUN python3 get-pip.py
+RUN rm get-pip.py
 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+RUN pip3 install -U pip
+RUN pip3 install unicornclient
+
+CMD ["unicornclient"]
