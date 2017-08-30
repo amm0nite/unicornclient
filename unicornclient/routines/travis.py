@@ -12,6 +12,7 @@ class Routine(threading.Thread):
         self.hat = hat.Unicorn()
         self.queue = queue.Queue()
         self.status = {}
+        self.monitor = None
         self.just_updated = False
         self.pending_toggle = False
 
@@ -22,13 +23,18 @@ class Routine(threading.Thread):
             try:
                 data = self.queue.get_nowait()
                 status = data['status'] if 'status' in data else None
+                monitor = data['monitor'] if 'monitor' in data else None
                 got_task = True
             except queue.Empty:
                 status = None
+                monitor = None
 
             self.just_updated = False
             if status:
                 self.status = status
+                self.just_updated = True
+            if monitor:
+                self.monitor = monitor
                 self.just_updated = True
 
             self.hat.clear()
@@ -59,6 +65,10 @@ class Routine(threading.Thread):
         if self.just_updated:
             return self.hat.set_all_pixel(255, 255, 255)
 
+        self.update_monitor()
+        self.update_status()
+
+    def update_status(self):
         rows = {}
         interesting_branches = ['dev', 'preprod', 'prod'][::-1]
         repo_names = []
@@ -80,3 +90,9 @@ class Routine(threading.Thread):
                     self.hat.set_pixel(x, y, color['r'], color['g'], color['b'])
                 y += 1
             x += 1
+
+    def update_monitor(self):
+        if self.monitor == 'failed':
+            self.hat.set_line_pixel(3, 255, 0, 0)
+        else:
+            self.hat.set_line_pixel(3, 0, 255, 0)

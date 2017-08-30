@@ -41,7 +41,11 @@ class Unicorn(object):
             for y in range(0, self.height):
                 self.set_pixel(x, y, r, g, b)
 
-    def set_line_pixel(self, x=0, r=255, g=255, b=255):
+    def set_line_pixel(self, y=0, r=255, g=255, b=255):
+        for x in range(0, self.width):
+            self.set_pixel(x, y, r, g, b)
+
+    def set_column_pixel(self, x=0, r=255, g=255, b=255):
         for y in range(0, self.height):
             self.set_pixel(x, y, r, g, b)
 
