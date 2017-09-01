@@ -92,7 +92,7 @@ class Routine(threading.Thread):
             x += 1
 
     def update_monitor(self):
-        if self.monitor == 'failed':
+        if self.monitor == 'failed' or self.monitor == 'error':
             self.hat.set_line_pixel(3, 255, 0, 0)
         else:
             self.hat.set_line_pixel(3, 0, 255, 0)
