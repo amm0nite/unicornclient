@@ -1,19 +1,28 @@
 import threading
+import logging
 import queue
 
-from yoctopuce.yocto_api import YAPI
-from yoctopuce.yocto_temperature import YTemperature
-
 from .. import message
+
+try:
+    from yoctopuce.yocto_api import YAPI
+    from yoctopuce.yocto_temperature import YTemperature
+except ImportError:
+    YAPI, YTemperature = None, None
+    logging.warning("No yoctopuce module")
 
 class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
         self.manager = None
-        YAPI.RegisterHub("usb")
 
     def run(self):
+        if not YAPI or not YTemperature:
+            return
+
+        YAPI.RegisterHub("usb")
+
         while True:
             self.queue.get()
 
