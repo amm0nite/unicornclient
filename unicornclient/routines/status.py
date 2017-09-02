@@ -22,7 +22,7 @@ class Routine(threading.Thread):
             'type':'status',
             'status': status
         }
-        self.manager.forward('dothat', {'text':status['temp']})
+        self.manager.forward('yocto', {})
         self.manager.send(message.Message(payload))
 
     def get_status(self):

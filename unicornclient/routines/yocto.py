@@ -19,7 +19,7 @@ class Routine(threading.Thread):
 
             temps = self.get_temperatures()
             if temps:
-                text = str(temps[0]) + str(temps[1])
+                text = str(temps[0])[:3] + str(temps[1])[:3]
                 payload = {
                     'type':'status',
                     'status': {
@@ -48,8 +48,8 @@ class Routine(threading.Thread):
         channel2 = YTemperature.FindTemperature(serial + '.temperature2')
 
         if channel1.isOnline() and channel2.isOnline():
-            temp1 = (channel1.get_currentValue())
-            temp2 = (channel2.get_currentValue())
+            temp1 = channel1.get_currentValue()
+            temp2 = channel2.get_currentValue()
             return (temp1, temp2)
 
         return None
