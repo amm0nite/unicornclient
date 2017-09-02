@@ -14,6 +14,9 @@ pip3 install unicornhat
 ```
 pip3 install picamera
 ```
+```
+pip3 install yoctopuce
+```
 ## Docker image
 ```
 docker run amm0nite/unicornclient
