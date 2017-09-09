@@ -16,32 +16,31 @@ class Routine(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
         self.manager = None
-        self.channel1 = None
-        self.channel2 = None
+        self.temp1 = None
+        self.temp2 = None
 
     def run(self):
-        self.setup_channels()
-
         while True:
             self.queue.get()
 
-            temps = self.get_temperatures()
-            if temps:
-                text = str(temps[0])[:3] + str(temps[1])[:3]
-                payload = {
-                    'type':'status',
-                    'status': {
-                        'temp1' : temps[0],
-                        'temp2' : temps[1],
-                    }
-                }
+            self.update_temperatures()
 
-                self.manager.forward('dothat', {'text': text})
-                self.manager.send(message.Message(payload))
+            text = str(self.temp1)[:3] + str(self.temp2)[:3]
+            payload = {
+                'type':'status',
+                'status': {
+                    'temp1' : self.temp1,
+                    'temp2' : self.temp2,
+                }
+            }
+            print(payload)
+
+            self.manager.forward('dothat', {'text': text})
+            self.manager.send(message.Message(payload))
 
             self.queue.task_done()
 
-    def setup_channels(self):
+    def update_temperatures(self):
         if not YAPI or not YTemperature:
             raise Exception('no module')
 
@@ -54,13 +53,11 @@ class Routine(threading.Thread):
             raise Exception('sensor offline')
 
         serial = sensor.get_module().get_serialNumber()
-        self.channel1 = YTemperature.FindTemperature(serial + '.temperature1')
-        self.channel2 = YTemperature.FindTemperature(serial + '.temperature2')
+        channel1 = YTemperature.FindTemperature(serial + '.temperature1')
+        channel2 = YTemperature.FindTemperature(serial + '.temperature2')
 
-    def get_temperatures(self):
-        if self.channel1.isOnline() and self.channel2.isOnline():
-            temp1 = self.channel1.get_currentValue()
-            temp2 = self.channel2.get_currentValue()
-            return (temp1, temp2)
+        if channel1.isOnline() and channel2.isOnline():
+            self.temp1 = channel1.get_currentValue()
+            self.temp2 = channel2.get_currentValue()
 
-        return None
+        YAPI.FreeAPI()
