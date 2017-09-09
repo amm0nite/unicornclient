@@ -33,7 +33,6 @@ class Routine(threading.Thread):
                     'temp2' : self.temp2,
                 }
             }
-            print(payload)
 
             self.manager.forward('dothat', {'text': text})
             self.manager.send(message.Message(payload))
