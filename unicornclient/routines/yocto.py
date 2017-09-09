@@ -16,12 +16,11 @@ class Routine(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
         self.manager = None
+        self.channel1 = None
+        self.channel2 = None
 
     def run(self):
-        if not YAPI or not YTemperature:
-            return
-
-        YAPI.RegisterHub("usb")
+        self.setup_channels()
 
         while True:
             self.queue.get()
@@ -42,23 +41,26 @@ class Routine(threading.Thread):
 
             self.queue.task_done()
 
-    def get_temperatures(self):
+    def setup_channels(self):
+        if not YAPI or not YTemperature:
+            raise Exception('no module')
+
+        YAPI.RegisterHub("usb")
         sensor = YTemperature.FirstTemperature()
 
         if sensor is None:
-            return None
-
+            raise Exception('no sensor')
         if not (sensor.isOnline()):
-            return None
+            raise Exception('sensor offline')
 
         serial = sensor.get_module().get_serialNumber()
+        self.channel1 = YTemperature.FindTemperature(serial + '.temperature1')
+        self.channel2 = YTemperature.FindTemperature(serial + '.temperature2')
 
-        channel1 = YTemperature.FindTemperature(serial + '.temperature1')
-        channel2 = YTemperature.FindTemperature(serial + '.temperature2')
-
-        if channel1.isOnline() and channel2.isOnline():
-            temp1 = channel1.get_currentValue()
-            temp2 = channel2.get_currentValue()
+    def get_temperatures(self):
+        if self.channel1.isOnline() and self.channel2.isOnline():
+            temp1 = self.channel1.get_currentValue()
+            temp2 = self.channel2.get_currentValue()
             return (temp1, temp2)
 
         return None
