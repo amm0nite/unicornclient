@@ -48,6 +48,8 @@ autostart=true
 autorestart=true
 redirect_stderr=true
 stdout_logfile=/dev/shm/unicornclient.log
+stdout_logfile_maxbytes=10MB
+stdout_logfile_backups=2
 stopsignal=KILL
 stopasgroup=true"
 
