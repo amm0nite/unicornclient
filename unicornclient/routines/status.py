@@ -27,6 +27,8 @@ class Routine(threading.Thread):
 
     def get_status(self):
         status = {
+            'serial' : spy.get_serial(),
+            'machine_id': spy.get_machine_id(),
             'hostname': spy.get_hostname(),
             'local_ip': spy.get_local_ip(),
             'addresses': spy.get_macs(),
