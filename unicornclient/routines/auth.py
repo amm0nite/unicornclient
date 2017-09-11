@@ -13,15 +13,21 @@ class Routine(threading.Thread):
 
     def run(self):
         while True:
-            self.queue.get()
-            self.authenticate()
+            data = self.queue.get()
+            action = data['action'] if 'action' in data else None
+
+            if action == 'authenticate':
+                self.authenticate()
+            elif action == 'install':
+                secret = data['secret'] if 'secret' in data else None
+                spy.save_secret(secret)
+
             self.queue.task_done()
 
     def authenticate(self):
         payload = {
             'type':'auth',
-            'serial': spy.get_serial(),
-            'machine_id': spy.get_machine_id(),
+            'secret': spy.load_secret(),
             'version': version.VERSION,
         }
         self.manager.send(message.Message(payload))

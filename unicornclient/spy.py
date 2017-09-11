@@ -1,6 +1,9 @@
 import os
 import socket
 import subprocess
+import logging
+
+from . import config
 
 def get_machine_id():
     machine_id = None
@@ -102,3 +105,21 @@ def get_uptime():
     uptime_seconds = float(uptime_file.readline().split()[0])
     uptime_file.close()
     return uptime_seconds
+
+def save_secret(secret):
+    path = config.SECRET_PATH
+    base_path = os.path.dirname(path)
+    os.makedirs(base_path, exist_ok=True)
+    with open(path, 'w') as secret_file:
+        secret_file.write(secret)
+        return True
+
+def load_secret():
+    path = config.SECRET_PATH
+    try:
+        with open(path, 'r') as secret_file:
+            secret = secret_file.read()
+            return secret
+    except FileNotFoundError as err:
+        logging.error(err)
+        return None
