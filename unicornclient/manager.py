@@ -9,7 +9,7 @@ class Manager(object):
         self.sender = sender
         self.threads = {}
 
-    def start(self):
+    def start_default(self):
         self.start_routines(config.DEFAULT_ROUTINES)
 
     def start_routines(self, routines):
@@ -41,4 +41,4 @@ class Manager(object):
         self.sender.send(message)
 
     def authenticate(self):
-        self.forward('auth', True)
+        self.forward('auth', {'action':'authenticate'})

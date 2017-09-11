@@ -23,7 +23,10 @@ def main():
 
     _manager = manager.Manager(_sender)
     _handler = handler.Handler(_manager)
-    _manager.start()
+
+    _manager.start_default()
+    _sender.daemon = True
+    _sender.start()
 
     while True:
         client = None
@@ -52,9 +55,11 @@ def main():
                 parsed = _parser.parse()
                 for message in parsed:
                     _handler.handle(message)
+                if not _sender.socket:
+                    raise ShutdownException()
 
         except socket.error as err:
-            logging.error('socket error')
+            logging.error('client socket error')
             logging.error(err)
         except ShutdownException as err:
             logging.critical('server shutdown')

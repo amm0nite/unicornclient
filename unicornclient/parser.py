@@ -76,6 +76,7 @@ class Parser(object):
             return None
 
         except ValueError as err:
+            logging.error('parser ValueError')
             logging.error(err, exc_info=True)
             self.reset()
             return None
