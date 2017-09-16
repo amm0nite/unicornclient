@@ -1,11 +1,10 @@
-import threading
 import datetime
 import logging
-import queue
 import time
 import io
 
-from .. import message
+from unicornclient import message
+from unicornclient import routine
 
 try:
     from picamera import PiCamera
@@ -13,10 +12,9 @@ except ImportError:
     PiCamera = None
     logging.warning("No picamera module")
 
-class Routine(threading.Thread):
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
+        routine.Routine.__init__(self)
         self.manager = None
 
     def run(self):

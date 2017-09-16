@@ -1,14 +1,10 @@
-import threading
-import queue
+from unicornclient import routine
+from unicornclient import message
 
-from .. import message
-
-class Routine(threading.Thread):
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
+        routine.Routine.__init__(self)
         self.last_ping_id = None
-        self.manager = None
 
     def run(self):
         while True:

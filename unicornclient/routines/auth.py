@@ -1,15 +1,11 @@
-import threading
-import queue
+from unicornclient import spy
+from unicornclient import routine
+from unicornclient import message
+from unicornclient import version
 
-from .. import spy
-from .. import message
-from .. import version
-
-class Routine(threading.Thread):
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
-        self.manager = None
+        routine.Routine.__init__(self)
 
     def run(self):
         while True:

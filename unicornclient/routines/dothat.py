@@ -1,13 +1,10 @@
-import threading
-import queue
+from unicornclient import hat
+from unicornclient import routine
 
-from .. import hat
-
-class Routine(threading.Thread):
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
+        routine.Routine.__init__(self)
         self.hat = hat.Microdot()
-        self.queue = queue.Queue()
 
     def run(self):
         while True:

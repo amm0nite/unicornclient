@@ -1,16 +1,15 @@
 # pylint: disable=C0103
 
 import time
-import threading
 import queue
 
-from .. import hat
+from unicornclient import hat
+from unicornclient import routine
 
-class Routine(threading.Thread):
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
+        routine.Routine.__init__(self)
         self.hat = hat.Unicorn()
-        self.queue = queue.Queue()
         self.status = {}
         self.monitor = None
         self.just_updated = False

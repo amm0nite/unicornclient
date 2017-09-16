@@ -5,8 +5,15 @@ class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
+        self.manager = None
 
     def run(self):
-        while True:
-            self.queue.get()
-            self.queue.task_done()
+        pass
+
+"""
+class Example(Routine):
+    def run(self):
+        data = self.queue.get()
+        print(data)
+        self.queue.task_done()
+"""

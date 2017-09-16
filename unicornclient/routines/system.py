@@ -1,11 +1,10 @@
-import threading
-import queue
 import subprocess
 
-class Routine(threading.Thread):
+from unicornclient import routine
+
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
+        routine.Routine.__init__(self)
         self.authorized_commands = ['reboot', 'halt']
 
     def run(self):

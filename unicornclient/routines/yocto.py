@@ -1,8 +1,7 @@
-import threading
 import logging
-import queue
 
-from .. import message
+from unicornclient import routine
+from unicornclient import message
 
 try:
     from yoctopuce.yocto_api import YAPI
@@ -11,11 +10,9 @@ except ImportError:
     YAPI, YTemperature = None, None
     logging.warning("No yoctopuce module")
 
-class Routine(threading.Thread):
+class Routine(routine.Routine):
     def __init__(self):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
-        self.manager = None
+        routine.Routine.__init__(self)
         self.temp1 = None
         self.temp2 = None
 
