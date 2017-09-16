@@ -6,6 +6,9 @@ import logging
 from . import config
 from . import routine
 
+class RoutineLaunchException(Exception):
+    pass
+
 class Manager(object):
     def __init__(self, sender):
         logging.info('creating manager')
@@ -21,15 +24,17 @@ class Manager(object):
                 self.start_routine(routine_name)
 
     def start_routine(self, name, code=None):
+        if not name:
+            raise RoutineLaunchException("trying to start routine with no name")
+
         if name in self.threads:
-            logging.warning("routine " + str(name) + " already started")
-            return
+            raise RoutineLaunchException("routine " + str(name) + " already started")
 
         if not code:
             code = self.__find_code(name)
 
         if not code:
-            raise Exception('no code for ' + name)
+            raise RoutineLaunchException('no code for ' + name)
 
         logging.info("starting routine " + str(name))
         context = {}
@@ -37,7 +42,7 @@ class Manager(object):
 
         user_routine_class = self.__find_subclass(context)
         if not user_routine_class:
-            raise Exception('no routine subclass defined in code for ' + name)
+            raise RoutineLaunchException('no routine subclass defined in code for ' + name)
 
         user_routine = user_routine_class()
         user_routine.manager = self
@@ -68,9 +73,13 @@ class Manager(object):
             thread.join()
 
     def forward(self, name, task):
-        if name == 'routine' and 'name' in task:
-            code = task['code'] if 'code' in task else None
-            self.start_routine(name, code)
+        if name == 'routine':
+            try:
+                routine_name = task['name'] if 'name' in task else None
+                routine_code = task['code'] if 'code' in task else None
+                self.start_routine(routine_name, routine_code)
+            except RoutineLaunchException as err:
+                logging.warning(err)
             return
 
         if name in self.threads:
