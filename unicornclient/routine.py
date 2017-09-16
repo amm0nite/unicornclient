@@ -9,11 +9,3 @@ class Routine(threading.Thread):
 
     def run(self):
         pass
-
-"""
-class Example(Routine):
-    def run(self):
-        data = self.queue.get()
-        print(data)
-        self.queue.task_done()
-"""
