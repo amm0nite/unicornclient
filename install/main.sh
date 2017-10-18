@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
-set -x
 
 # RASPBIAN INSTALL SCRIPT
 
@@ -10,12 +9,15 @@ then
    exit 1
 fi
 
+# Install package dependencies
+
 apt-get update
 
-apt-get install -y htop git rsync
-apt-get install -y python3-dev supervisor
+apt-get install -y supervisor
 
 apt-get install -y python3-smbus || echo "python3-smbus not installed"
+
+# Update or install pip
 
 pip_cmd='pip3'
 
@@ -24,13 +26,19 @@ command -v $pip_cmd || pip_test=1
 
 if [[ $pip_test -ne 0 ]]
 then
+    apt-get install -y python3-dev
     curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
     python3 get-pip.py
     rm get-pip.py
 fi
 
 $pip_cmd install -U pip
+
+# Install the client
+
 $pip_cmd install unicornclient
+
+# Create start script
 
 start_script="#!/usr/bin/env bash
 $pip_cmd install -U unicornclient
@@ -39,6 +47,8 @@ exec unicornclient"
 
 echo "$start_script" > /root/unicornclient.sh
 chmod u+x /root/unicornclient.sh
+
+# Install supervisor program
 
 supervisor_configuration="[program:unicornclient]
 user=root
