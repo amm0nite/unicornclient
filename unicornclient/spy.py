@@ -119,7 +119,7 @@ def load_secret():
     try:
         with open(path, 'r') as secret_file:
             secret = secret_file.read()
-            return secret
+            return secret.strip()
     except FileNotFoundError as err:
         logging.error(err)
         return None
