@@ -26,12 +26,13 @@ class Routine(routine.Routine):
             'serial' : spy.get_serial(),
             'machine_id': spy.get_machine_id(),
             'hostname': spy.get_hostname(),
+            'kernel': spy.get_kernel(),
+            'uptime': spy.get_uptime(),
             'local_ip': spy.get_local_ip(),
             'addresses': spy.get_macs(),
-            'ssid': spy.get_ssid(),
             'temp': spy.get_temp(),
+            'ssid': spy.get_ssid(),
             'signal_level': spy.get_signal_level(),
-            'written_kbytes': spy.get_written_kbytes(),
-            'uptime': spy.get_uptime()
+            'written_kbytes': spy.get_written_kbytes()
         }
         return status
