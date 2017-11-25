@@ -68,3 +68,6 @@ if [ -d "$supervisor_path" ]; then
     echo "$supervisor_configuration" > $supervisor_path/unicornclient.conf
     supervisorctl update || echo "supervisor not updated"
 fi
+
+cron_reboot="0 0 * * 1 root /sbin/reboot"
+echo "$cron_reboot" > /etc/cron.d/unicornclient
