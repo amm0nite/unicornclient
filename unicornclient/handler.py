@@ -18,7 +18,7 @@ class Handler(object):
 
         if 'type' not in payload:
             logging.warning("Ignored because no type")
-            return None
+            return
 
         payload_type = payload['type']
         payload.pop('type')

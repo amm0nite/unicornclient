@@ -117,5 +117,5 @@ class Parser(object):
         try:
             return json.loads(json_string)
         except ValueError as err:
-            logging.warning('JSON decode error: ' + str(err))
+            logging.warning('JSON decode error: %s', err)
             return None

@@ -32,7 +32,7 @@ def main():
         client = None
         try:
             address = (config.HOST, config.PORT)
-            logging.info('connecting to ' + str(address))
+            logging.info('connecting to %s', address)
 
             connection = socket.create_connection(address, TIMEOUT)
             connection.settimeout(TIMEOUT)

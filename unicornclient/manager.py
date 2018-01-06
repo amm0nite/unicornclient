@@ -36,7 +36,7 @@ class Manager(object):
         if not code:
             raise RoutineLaunchException('no code for ' + name)
 
-        logging.info("starting routine " + str(name))
+        logging.info("starting routine %s", name)
         context = {}
         exec(code, context)
 

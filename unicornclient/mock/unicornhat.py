@@ -1,3 +1,5 @@
+# pylint: disable=W1201
+
 import logging
 
 AUTO = 'auto'
