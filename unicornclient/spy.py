@@ -91,7 +91,13 @@ def get_kernel():
 def save_secret(secret):
     path = config.SECRET_PATH
     base_path = os.path.dirname(path)
-    os.makedirs(base_path, exist_ok=True)
+
+    try:
+        os.makedirs(base_path, exist_ok=True)
+    except PermissionError as err:
+        logging.warning(err)
+        return False
+
     with open(path, 'w') as secret_file:
         secret_file.write(secret)
         return True

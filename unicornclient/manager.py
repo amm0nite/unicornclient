@@ -2,11 +2,14 @@
 
 import os
 import logging
+import threading
 
 from . import config
 from . import routine
 
-class RoutineLaunchException(Exception):
+class SupervisionException(Exception):
+    pass
+class StopRoutineException(Exception):
     pass
 
 class Manager(object):
@@ -25,16 +28,19 @@ class Manager(object):
 
     def start_routine(self, name, code=None):
         if not name:
-            raise RoutineLaunchException("trying to start routine with no name")
+            raise SupervisionException("trying to start routine with no name")
 
         if name in self.threads:
-            raise RoutineLaunchException("routine " + str(name) + " already started")
+            try:
+                self.stop_routine(name)
+            except StopRoutineException:
+                raise SupervisionException('could not stop routine')
 
         if not code:
             code = self.__find_code(name)
 
         if not code:
-            raise RoutineLaunchException('no code for ' + name)
+            raise SupervisionException('no code for ' + name)
 
         logging.info("starting routine %s", name)
         context = {}
@@ -42,13 +48,22 @@ class Manager(object):
 
         user_routine_class = self.__find_subclass(context)
         if not user_routine_class:
-            raise RoutineLaunchException('no routine subclass defined in code for ' + name)
+            raise SupervisionException('no routine subclass defined in code for ' + name)
 
         user_routine = user_routine_class()
         user_routine.manager = self
         user_routine.daemon = True
         user_routine.start()
         self.threads[name] = user_routine
+
+    def stop_routine(self, name):
+        logging.info('stopping routine %s', name)
+        if threading.current_thread() == self.threads[name]:
+            raise StopRoutineException('routine can not stop itself')
+        self.forward(name, {'routine_command': 'stop'})
+        self.threads[name].join()
+        del self.threads[name]
+        logging.info('routine %s stopped', name)
 
     def __find_code(self, name):
         routine_path = os.path.join(os.path.dirname(__file__), 'routines', name + '.py')
@@ -78,7 +93,7 @@ class Manager(object):
                 routine_name = task['name'] if 'name' in task else None
                 routine_code = task['code'] if 'code' in task else None
                 self.start_routine(routine_name, routine_code)
-            except RoutineLaunchException as err:
+            except SupervisionException as err:
                 logging.warning(err)
             return
 

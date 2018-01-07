@@ -6,11 +6,8 @@ class Routine(routine.Routine):
     def __init__(self):
         routine.Routine.__init__(self)
 
-    def run(self):
-        while True:
-            self.queue.get()
-            self.send_status()
-            self.queue.task_done()
+    def process(self, data):
+        self.send_status()
 
     def send_status(self):
         status = self.get_status()

@@ -7,12 +7,8 @@ class Routine(routine.Routine):
         routine.Routine.__init__(self)
         self.authorized_commands = ['reboot', 'halt']
 
-    def run(self):
-        while True:
-            data = self.queue.get()
-            command = data['command'] if 'command' in data else None
+    def process(self, data):
+        command = data['command'] if 'command' in data else None
 
-            if command in self.authorized_commands:
-                subprocess.call(command, shell=True)
-
-            self.queue.task_done()
+        if command in self.authorized_commands:
+            subprocess.call(command, shell=True)
