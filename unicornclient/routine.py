@@ -10,12 +10,19 @@ class Routine(threading.Thread):
 
     def run(self):
         while True:
+            got_task = False
             data = None
 
             if self.no_wait:
-                data = self.queue.get_nowait()
+                try:
+                    data = self.queue.get_nowait()
+                    got_task = True
+                except queue.Empty:
+                    data = None
+                    got_task = False
             else:
                 data = self.queue.get()
+                got_task = True
 
             if data:
                 index = 'routine_command'
@@ -25,7 +32,9 @@ class Routine(threading.Thread):
                     return
 
             self.process(data)
-            self.queue.task_done()
+
+            if got_task:
+                self.queue.task_done()
 
     def process(self, data):
         pass
