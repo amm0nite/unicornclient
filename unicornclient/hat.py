@@ -62,8 +62,8 @@ class Microdot(object):
     def clear(self):
         microdot.clear()
 
-    def write_string(self, value):
-        microdot.write_string(value, kerning=False)
+    def write_string(self, value, kerning=True):
+        microdot.write_string(value, kerning=kerning)
 
     def show(self):
         microdot.show()
