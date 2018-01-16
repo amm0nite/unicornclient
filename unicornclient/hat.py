@@ -65,5 +65,8 @@ class Microdot(object):
     def write_string(self, value, kerning=True):
         microdot.write_string(value, kerning=kerning)
 
+    def set_decimal(self, index, state):
+        microdot.set_decimal(index, state)
+
     def show(self):
         microdot.show()
