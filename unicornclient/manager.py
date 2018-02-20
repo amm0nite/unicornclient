@@ -61,6 +61,7 @@ class Manager(object):
         if threading.current_thread() == self.threads[name]:
             raise StopRoutineException('routine can not stop itself')
         self.forward(name, {'routine_command': 'stop'})
+        self.threads[name].wake_up()
         self.threads[name].join()
         del self.threads[name]
         logging.info('routine %s stopped', name)

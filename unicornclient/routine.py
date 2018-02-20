@@ -8,6 +8,7 @@ class Routine(threading.Thread):
         self.manager = None
         self.no_wait = False
         self.is_stopping = False
+        self.sleeper = threading.Event()
 
     def run(self):
         while True:
@@ -39,6 +40,14 @@ class Routine(threading.Thread):
 
             if self.is_stopping:
                 break
+
+    def sleep(self, seconds):
+        while not self.sleeper.is_set():
+            self.sleeper.wait(timeout=seconds)
+        self.sleeper.clear()
+
+    def wake_up(self):
+        self.sleeper.set()
 
     def process(self, data):
         pass
