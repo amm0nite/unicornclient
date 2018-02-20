@@ -60,10 +60,12 @@ class Manager(object):
         logging.info('stopping routine %s', name)
         if threading.current_thread() == self.threads[name]:
             raise StopRoutineException('routine can not stop itself')
-        self.forward(name, {'routine_command': 'stop'})
-        self.threads[name].wake_up()
-        self.threads[name].join()
+
+        running_routine = self.threads[name]
+        running_routine.stop_signal()
+        running_routine.join()
         del self.threads[name]
+
         logging.info('routine %s stopped', name)
 
     def __find_code(self, name):

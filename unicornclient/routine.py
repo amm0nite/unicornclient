@@ -41,13 +41,21 @@ class Routine(threading.Thread):
             if self.is_stopping:
                 break
 
+    def process(self, data):
+        pass
+
     def sleep(self, seconds):
         while not self.sleeper.is_set():
             self.sleeper.wait(timeout=seconds)
         self.sleeper.clear()
 
-    def wake_up(self):
-        self.sleeper.set()
+    def stop_signal(self):
+        while not self.queue.empty():
+            try:
+                self.queue.get_nowait()
+            except queue.Empty:
+                continue
+            self.queue.task_done()
 
-    def process(self, data):
-        pass
+        self.queue.put({'routine_command': 'stop'})
+        self.sleeper.set()
