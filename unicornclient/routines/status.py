@@ -15,7 +15,6 @@ class Routine(routine.Routine):
             'type':'status',
             'status': status
         }
-        self.manager.forward('yocto', {})
         self.manager.send(message.Message(payload))
 
     def get_status(self):
