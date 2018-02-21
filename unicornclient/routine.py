@@ -47,8 +47,7 @@ class Routine(threading.Thread):
     def sleep(self, seconds):
         if self.is_stopping:
             return
-        while not self.sleeper.is_set():
-            self.sleeper.wait(timeout=seconds)
+        self.sleeper.wait(timeout=seconds)
         self.sleeper.clear()
 
     def stop_signal(self):
