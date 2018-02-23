@@ -22,4 +22,4 @@ class Routine(routine.Routine):
             'secret': spy.load_secret(),
             'version': version.VERSION,
         }
-        self.manager.send(message.Message(payload))
+        self.mission.send(message.Message(payload))

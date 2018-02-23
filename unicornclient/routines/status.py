@@ -15,7 +15,7 @@ class Routine(routine.Routine):
             'type':'status',
             'status': status
         }
-        self.manager.send(message.Message(payload))
+        self.mission.send(message.Message(payload))
 
     def get_status(self):
         status = {

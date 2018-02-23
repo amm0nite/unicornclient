@@ -6,6 +6,7 @@ import threading
 
 from . import config
 from . import routine
+from . import mission
 
 class SupervisionException(Exception):
     pass
@@ -15,7 +16,7 @@ class StopRoutineException(Exception):
 class Manager(object):
     def __init__(self, sender):
         logging.info('creating manager')
-        self.sender = sender
+        self.mission = mission.Mission(sender)
         self.threads = {}
 
     def start_default(self):
@@ -51,7 +52,7 @@ class Manager(object):
             raise SupervisionException('no routine subclass defined in code for ' + name)
 
         user_routine = user_routine_class()
-        user_routine.manager = self
+        user_routine.mission = self.mission
         user_routine.daemon = True
         user_routine.start()
         self.threads[name] = user_routine
@@ -103,9 +104,6 @@ class Manager(object):
         if name in self.threads:
             self.threads[name].queue.put(task)
             return
-
-    def send(self, message):
-        self.sender.send(message)
 
     def authenticate(self):
         self.forward('auth', {'action':'authenticate'})

@@ -5,7 +5,7 @@ class Routine(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
-        self.manager = None
+        self.mission = None
         self.no_wait = False
         self.is_stopping = False
         self.sleeper = threading.Event()

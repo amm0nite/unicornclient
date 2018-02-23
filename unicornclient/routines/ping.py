@@ -11,4 +11,4 @@ class Routine(routine.Routine):
         if ping_id:
             self.last_ping_id = ping_id
             payload = {'type': 'pong', 'id': ping_id}
-            self.manager.send(message.Message(payload))
+            self.mission.send(message.Message(payload))
