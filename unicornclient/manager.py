@@ -16,7 +16,8 @@ class StopRoutineException(Exception):
 class Manager(object):
     def __init__(self, sender):
         logging.info('creating manager')
-        self.mission = mission.Mission(sender)
+        self.sender = sender
+        self.mission = mission.Mission(self)
         self.threads = {}
 
     def start_default(self):
