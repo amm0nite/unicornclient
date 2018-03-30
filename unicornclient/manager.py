@@ -46,7 +46,8 @@ class Manager(object):
 
         logging.info("starting routine %s", name)
         context = {}
-        exec(code, context)
+        compiled_code = compile(code, name + ' routine', 'exec')
+        exec(compiled_code, context)
 
         user_routine_class = self.__find_subclass(context)
         if not user_routine_class:
