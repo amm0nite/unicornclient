@@ -12,3 +12,9 @@ class Routine(routine.Routine):
 
         if command in self.authorized_commands:
             subprocess.call(command, shell=True)
+
+    def get_end_points(self):
+        return {
+            'reboot': {'command': 'reboot'},
+            'halt'  : {'command': 'halt'}
+        }

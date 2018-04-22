@@ -20,3 +20,6 @@ class Mission(object):
 
     def forward(self, name, task):
         self.manager.forward(name, task)
+
+    def get_end_points(self):
+        self.manager.get_end_points()
