@@ -32,3 +32,8 @@ class Routine(routine.Routine):
             'written_kbytes': spy.get_written_kbytes()
         }
         return status
+
+    def get_skills(self):
+        return {
+            'update_status': {'status': True}
+        }

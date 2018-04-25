@@ -60,3 +60,6 @@ class Routine(threading.Thread):
 
         self.queue.put({'routine_command': 'stop'})
         self.sleeper.set()
+
+    def get_skills(self):
+        return []

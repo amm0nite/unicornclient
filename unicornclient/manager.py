@@ -109,3 +109,9 @@ class Manager(object):
 
     def authenticate(self):
         self.forward('auth', {'action':'authenticate'})
+
+    def get_routines_skills(self):
+        skills_by_routine = {}
+        for name, running_routine in self.threads.items():
+            skills_by_routine[name] = running_routine.get_skills()
+        return skills_by_routine
