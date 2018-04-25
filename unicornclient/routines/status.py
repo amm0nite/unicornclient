@@ -29,7 +29,11 @@ class Routine(routine.Routine):
             'temp': spy.get_temp(),
             'ssid': spy.get_ssid(),
             'signal_level': spy.get_signal_level(),
-            'written_kbytes': spy.get_written_kbytes(),
-            'end_points': self.mission.get_end_points()
+            'written_kbytes': spy.get_written_kbytes()
         }
         return status
+
+    def get_skills(self):
+        return {
+            'update_status': {'status': True}
+        }

@@ -11,7 +11,7 @@ PORT = 8080
 
 SSL_VERIFY = False
 
-DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system']
+DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system', 'skills']
 
 SECRET_PATH = '/tmp/unicornclient/secret'
 

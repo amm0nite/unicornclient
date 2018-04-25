@@ -61,8 +61,5 @@ class Routine(threading.Thread):
         self.queue.put({'routine_command': 'stop'})
         self.sleeper.set()
 
-    def get_end_points(self):
+    def get_skills(self):
         return []
-
-    def get_all_end_points(self):
-        return [] + self.get_end_points()

@@ -110,8 +110,8 @@ class Manager(object):
     def authenticate(self):
         self.forward('auth', {'action':'authenticate'})
 
-    def get_routine_end_points(self):
-        end_points = {}
+    def get_routines_skills(self):
+        skills_by_routine = {}
         for name, running_routine in self.threads.items():
-            end_points[name] = running_routine.get_end_points()
-        return end_points
+            skills_by_routine[name] = running_routine.get_skills()
+        return skills_by_routine

@@ -21,5 +21,7 @@ class Mission(object):
     def forward(self, name, task):
         self.manager.forward(name, task)
 
-    def get_end_points(self):
-        self.manager.get_end_points()
+    def send_skills(self):
+        skills = self.manager.get_routines_skills()
+        payload = {'type': 'skills', 'status': skills}
+        self.send(message.Message(payload))
