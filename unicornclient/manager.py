@@ -13,7 +13,7 @@ class SupervisionException(Exception):
 class StopRoutineException(Exception):
     pass
 
-class Manager(object):
+class Manager():
     def __init__(self, sender):
         logging.info('creating manager')
         self.sender = sender

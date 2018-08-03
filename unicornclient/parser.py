@@ -11,7 +11,7 @@ class State(enum.Enum):
     BODY_DATA = 4
     DONE = 5
 
-class Parser(object):
+class Parser():
     def __init__(self):
         self.remaining = b''
 

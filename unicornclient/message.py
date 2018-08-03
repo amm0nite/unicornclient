@@ -1,6 +1,6 @@
 import json
 
-class Message(object):
+class Message():
     def __init__(self, payload=None):
         self.header = {}
         if isinstance(payload, dict):

@@ -3,7 +3,7 @@ import json
 
 from . import message
 
-class Mission(object):
+class Mission():
     def __init__(self, manager):
         self.manager = manager
 

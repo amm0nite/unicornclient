@@ -3,7 +3,7 @@ import logging
 class MissingInfoException(Exception):
     pass
 
-class Handler(object):
+class Handler():
     def __init__(self, manager):
         self.manager = manager
         self.sender = None
