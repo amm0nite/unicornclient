@@ -5,11 +5,7 @@ ENV TERM xterm
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y curl python3-dev
 
-RUN curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
-RUN python3 get-pip.py
-RUN rm get-pip.py
+COPY /  /root/unicornclient
+WORKDIR /root/unicornclient
 
-RUN pip3 install -U pip
-RUN pip3 install unicornclient
-
-CMD ["unicornclient"]
+CMD ["bash", "start.sh"]
