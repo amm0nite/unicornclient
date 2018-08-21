@@ -17,6 +17,6 @@ SECRET_PATH = '/tmp/unicornclient/secret'
 
 if ENV == 'prod':
     LOG_LEVEL = logging.INFO
-    HOST = 'unicorn.ahst.fr'
+    HOST = 'unicorn.amnt.fr'
     SSL_VERIFY = True
     SECRET_PATH = '/etc/unicornclient/secret'
