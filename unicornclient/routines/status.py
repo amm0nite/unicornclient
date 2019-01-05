@@ -1,6 +1,7 @@
 from unicornclient import spy
 from unicornclient import routine
 from unicornclient import message
+from unicornclient import version
 
 class Routine(routine.Routine):
     def __init__(self):
@@ -19,6 +20,7 @@ class Routine(routine.Routine):
 
     def get_status(self):
         status = {
+            'version': version.VERSION,
             'serial' : spy.get_serial(),
             'machine_id': spy.get_machine_id(),
             'hostname': spy.get_hostname(),
