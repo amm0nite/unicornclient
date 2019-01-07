@@ -34,14 +34,14 @@ def get_local_ip():
     return local_ip
 
 def get_macs():
-    result = {}
+    result = []
     root_dir = '/sys/class/net'
     interfaces = os.listdir(root_dir)
     for interface in interfaces:
         if interface == 'lo' or interface.startswith('br') or interface.startswith('docker') or interface.startswith('veth'):
             continue
         with open(os.path.join(root_dir, interface, 'address'), 'r') as interface_file:
-            result[interface] = interface_file.read().strip()
+            result.append({'name': interface, 'address': interface_file.read().strip()})
     return result
 
 def get_ssid():

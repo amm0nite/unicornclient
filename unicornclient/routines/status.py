@@ -27,7 +27,7 @@ class Routine(routine.Routine):
             'kernel': spy.get_kernel(),
             'uptime': spy.get_uptime(),
             'local_ip': spy.get_local_ip(),
-            'addresses': spy.get_macs(),
+            'interfaces': spy.get_macs(),
             'temp': spy.get_temp(),
             'ssid': spy.get_ssid(),
             'signal_level': spy.get_signal_level(),
