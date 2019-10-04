@@ -31,6 +31,7 @@ class Routine(routine.Routine):
             'temp': spy.get_temp(),
             'ssid': spy.get_ssid(),
             'signal_level': spy.get_signal_level(),
-            'written_kbytes': spy.get_written_kbytes()
+            'written_kbytes': spy.get_written_kbytes(),
+            'cpu_frequency': spy.get_cpu_frequency(),
         }
         return status

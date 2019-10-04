@@ -56,6 +56,9 @@ def get_temp():
     temp = float(temp_raw / 1000.0)
     return temp
 
+def get_cpu_frequency():
+    return int(_read_file("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"))
+
 def get_signal_level():
     wireless_data = _read_file("/proc/net/wireless")
     lines = wireless_data.split("\n")
