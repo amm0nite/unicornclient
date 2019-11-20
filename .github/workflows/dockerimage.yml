@@ -1,14 +1,24 @@
 name: Docker Image CI
 
-on: [push]
+on:
+  push:
+    branches: 
+      - master
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag amm0nite/unicornclient:$(date +%s)
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Lint with pylint
+        run: |
+           pip install pylint
+           pylint
+      - name: Test
+        run: python -m unittest
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag amm0nite/unicornclient:$(date +%s)
