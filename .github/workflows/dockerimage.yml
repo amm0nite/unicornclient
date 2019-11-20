@@ -17,8 +17,8 @@ jobs:
       - name: Lint with pylint
         run: |
            pip install pylint
-           pylint
-      - name: Test
+           pylint unicornclient/
+      - name: Test with unittest
         run: python -m unittest
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag amm0nite/unicornclient:$(date +%s)
