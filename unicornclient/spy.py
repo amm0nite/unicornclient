@@ -2,6 +2,7 @@ import os
 import socket
 import subprocess
 import logging
+import shutil
 
 from . import config
 
@@ -45,6 +46,8 @@ def get_macs():
     return result
 
 def get_ssid():
+    if shutil.which('iwgetid') is None:
+        return None
     try:
         ssid = subprocess.check_output('iwgetid -r', shell=True)
     except subprocess.CalledProcessError:
