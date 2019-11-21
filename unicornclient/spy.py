@@ -52,7 +52,10 @@ def get_ssid():
     return ssid.decode().strip()
 
 def get_temp():
-    temp_raw = int(_read_file("/sys/class/thermal/thermal_zone0/temp"))
+    temp_file_content = _read_file("/sys/class/thermal/thermal_zone0/temp")
+    if not temp_file_content:
+        return None
+    temp_raw = int(temp_file_content)
     temp = float(temp_raw / 1000.0)
     return temp
 
