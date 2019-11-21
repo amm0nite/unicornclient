@@ -21,9 +21,9 @@ jobs:
       - name: Test with unittest
         run: python -m unittest
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag docker.pkg.github.com/amm0nite/unicornclient/unicornclient:latest
+        run: docker build . --file Dockerfile --tag amm0nite/unicornclient:latest
       - name: Publish the Docker image
         run: |
-          docker login docker.pkg.github.com --username ${{github.actor}} --password ${{secrets.GITHUB_TOKEN}}
-          docker push docker.pkg.github.com/amm0nite/unicornclient/unicornclient:latest
+          docker login --username amm0nite --password ${{secrets.docker_hub_token}}
+          docker push amm0nite/unicornclient:latest
           
