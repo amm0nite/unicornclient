@@ -1,0 +1,15 @@
+version: '3'
+
+volumes:
+  unicornclient-data:
+
+services:
+  unicornclient:
+    image: amm0nite/unicornclient:latest
+    environment:
+      PROC_PATH: "/mnt/proc"
+      SYS_PATH: "/mnt/sys"
+    volumes:
+      - unicornclient-data:/etc/unicornclient
+      - /proc:/mnt/proc:ro
+      - /sys:/mnt/sys:ro
