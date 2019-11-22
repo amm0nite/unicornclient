@@ -20,3 +20,6 @@ if ENV == 'prod':
     HOST = 'unicorn.amnt.fr'
     SSL_VERIFY = True
     SECRET_PATH = '/etc/unicornclient/secret'
+
+PROC_PATH = os.getenv('PROC_PATH', '/proc')
+SYS_PATH = os.getenv('SYS_PATH', '/sys')

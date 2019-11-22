@@ -17,7 +17,7 @@ def get_machine_id():
 
 def get_serial():
     # Extract serial from cpuinfo file
-    with open('/proc/cpuinfo', 'r') as cpuinfo_file:
+    with open(config.PROC_PATH + '/cpuinfo', 'r') as cpuinfo_file:
         for line in cpuinfo_file:
             if line[0:6] == 'Serial':
                 return line[10:26]
@@ -36,7 +36,7 @@ def get_local_ip():
 
 def get_macs():
     result = []
-    root_dir = '/sys/class/net'
+    root_dir = config.SYS_PATH + '/class/net'
     interfaces = os.listdir(root_dir)
     for interface in interfaces:
         if interface == 'lo' or interface.startswith('br') or interface.startswith('docker') or interface.startswith('veth'):
@@ -55,7 +55,7 @@ def get_ssid():
     return ssid.decode().strip()
 
 def get_temp():
-    temp_file_content = _read_file("/sys/class/thermal/thermal_zone0/temp")
+    temp_file_content = _read_file(config.SYS_PATH + '/class/thermal/thermal_zone0/temp')
     if not temp_file_content:
         return None
     temp_raw = int(temp_file_content)
@@ -63,10 +63,10 @@ def get_temp():
     return temp
 
 def get_cpu_frequency():
-    return int(_read_file("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"))
+    return int(_read_file(config.SYS_PATH + '/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq'))
 
 def get_signal_level():
-    wireless_data = _read_file("/proc/net/wireless")
+    wireless_data = _read_file(config.PROC_PATH + '/net/wireless')
     lines = wireless_data.split("\n")
     if len(lines) < 3:
         return None
@@ -77,7 +77,7 @@ def get_signal_level():
     return int(float(values[3]))
 
 def get_written_kbytes():
-    device_path = '/sys/fs/ext4/mmcblk0p2'
+    device_path = config.SYS_PATH + '/fs/ext4/mmcblk0p2'
     stat_files = ['session_write_kbytes', 'lifetime_write_kbytes']
     data = None
     for stat_file in stat_files:
@@ -88,13 +88,13 @@ def get_written_kbytes():
     return data
 
 def get_uptime():
-    uptime_data = _read_file('/proc/uptime')
+    uptime_data = _read_file(config.PROC_PATH + '/uptime')
     return float(uptime_data.split()[0])
 
 def get_kernel():
     return {
-        'release': _read_file('/proc/sys/kernel/osrelease'),
-        'version': _read_file('/proc/sys/kernel/version'),
+        'release': _read_file(config.PROC_PATH + '/sys/kernel/osrelease'),
+        'version': _read_file(config.PROC_PATH + '/sys/kernel/version'),
     }
 
 def save_secret(secret):
