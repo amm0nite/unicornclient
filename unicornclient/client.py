@@ -13,7 +13,7 @@ from . import sender
 from . import manager
 
 CONNECTION_TIMEOUT = 30
-REBOOT_TIMEOUT = 2
+REBOOT_TIMEOUT = 6
 
 class ShutdownException(Exception):
     pass
@@ -73,13 +73,15 @@ def main():
             if client:
                 client.close()
 
+        restarting = False
         elapsed = datetime.datetime.now() - start
         if elapsed > datetime.timedelta(hours=REBOOT_TIMEOUT):
-            return reboot()
-        time.sleep(random.randint(0, 9))
+            restarting = reboot()
+        if not restarting:
+            time.sleep(random.randint(0, 9))
 
 def reboot():
-    subprocess.call('reboot', shell=True)
+    return subprocess.call('reboot', shell=True) == 0
 
 if __name__ == '__main__':
     main()
