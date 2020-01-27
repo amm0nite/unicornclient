@@ -1,3 +1,5 @@
+# pylint: disable=R0912
+
 import socket
 import time
 import random
