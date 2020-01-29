@@ -81,6 +81,8 @@ def main():
             restarting = reboot()
         if not restarting:
             time.sleep(random.randint(0, 9))
+        else:
+            return
 
 def reboot():
     return subprocess.call('reboot', shell=True) == 0
