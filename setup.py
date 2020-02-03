@@ -28,7 +28,7 @@ setup(
     classifiers      = CLASSIFIERS,
     packages         = find_packages(),
     install_requires = [],
-    entry_points     = {'console_scripts': ['unicornclient=unicornclient:main']}
+    entry_points     = {'console_scripts': ['unicornclient=unicornclient.client:main']}
 )
 
 
