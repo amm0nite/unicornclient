@@ -13,28 +13,13 @@ fi
 
 apt-get update
 
-apt-get install -y supervisor
+apt-get install -y supervisor python3-dev python3-pip
 
 apt-get install -y python3-smbus || echo "python3-smbus not installed"
 
-# Update or install pip
+# Install the client
 
 pip_cmd='pip3'
-
-pip_test=0
-command -v $pip_cmd || pip_test=1
-
-if [[ $pip_test -ne 0 ]]
-then
-    apt-get install -y python3-dev
-    curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
-    python3 get-pip.py
-    rm get-pip.py
-fi
-
-$pip_cmd install -U pip
-
-# Install the client
 
 $pip_cmd install unicornclient
 
