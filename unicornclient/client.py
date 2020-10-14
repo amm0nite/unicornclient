@@ -39,7 +39,7 @@ def main():
         client = None
         try:
             address = (config.HOST, config.PORT)
-            logging.info('connecting to %s', address)
+            logging.info('connecting to %s (secure: %s)', address, config.SSL_VERIFY)
 
             connection = socket.create_connection(address, CONNECTION_TIMEOUT)
             connection.settimeout(CONNECTION_TIMEOUT)

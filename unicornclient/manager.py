@@ -4,9 +4,10 @@ import os
 import logging
 import threading
 
-from . import config
 from . import routine
 from . import mission
+
+DEFAULT_ROUTINES = ['auth', 'ping', 'status', 'system']
 
 class SupervisionException(Exception):
     pass
@@ -21,7 +22,7 @@ class Manager():
         self.threads = {}
 
     def start_default(self):
-        self.start_routines(config.DEFAULT_ROUTINES)
+        self.start_routines(DEFAULT_ROUTINES)
 
     def start_routines(self, routines):
         for routine_name in routines:
