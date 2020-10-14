@@ -26,4 +26,3 @@ jobs:
         run: |
           docker login --username amm0nite --password ${{secrets.docker_hub_token}}
           docker push amm0nite/unicornclient:latest
-          

@@ -23,6 +23,17 @@ pip_cmd='pip3'
 
 $pip_cmd install unicornclient
 
+# Create configuration file
+
+configuration="[DEFAULT]
+host = unicorn.amnt.fr
+ssl_verify = True
+mqtt_host = 10.0.0.12"
+
+configuration_path="/etc/unicornclient"
+mkdir -p $configuration_path
+echo "$configuration" > $configuration_path/config.ini
+
 # Create start script
 
 start_script="#!/usr/bin/env bash
