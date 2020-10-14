@@ -36,8 +36,8 @@ class Manager():
         if name in self.threads:
             try:
                 self.stop_routine(name)
-            except StopRoutineException:
-                raise SupervisionException('could not stop routine')
+            except StopRoutineException as routine_exception:
+                raise SupervisionException('could not stop routine') from routine_exception
 
         if not code:
             code = self.__find_code(name)

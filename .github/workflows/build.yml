@@ -1,12 +1,9 @@
 name: Auto Build
 
-on:
-  push:
-    branches: 
-      - master
+on: push
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -20,6 +17,11 @@ jobs:
            pylint unicornclient/
       - name: Test with unittest
         run: python -m unittest
+  build:
+    if: github.ref == 'refs/heads/master'
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag amm0nite/unicornclient:latest
       - name: Publish the Docker image
