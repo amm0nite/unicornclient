@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# pylint: disable=C0326, W0122, E0602
+# pylint: disable=W0122, E0602
 
 from setuptools import setup, find_packages
 
@@ -27,7 +27,7 @@ setup(
     url              = 'https://github.com/amm0nite/unicornclient',
     classifiers      = CLASSIFIERS,
     packages         = find_packages(),
-    install_requires = [],
+    install_requires = ['paho-mqtt'],
     entry_points     = {'console_scripts': ['unicornclient=unicornclient.client:main']}
 )
 
