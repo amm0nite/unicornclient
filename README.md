@@ -20,3 +20,16 @@ pip3 install yoctopuce
 ```
 docker run amm0nite/unicornclient
 ```
+## Development
+Create virtual env
+```
+virtualenv venv
+```
+Activate virtual env
+```
+source venv/bin/activate
+```
+Install requirements
+```
+pip3 install -r requirements.txt
+```

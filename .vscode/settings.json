@@ -5,5 +5,5 @@
         "*.egg-info": true,
         "**/__pycache__": true
     },
-    "python.pythonPath": "/usr/bin/python3"
+    "python.pythonPath": "/home/pierre/Dev/unicornclient/venv/bin/python3.8"
 }
