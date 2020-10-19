@@ -7,12 +7,11 @@ import logging
 import ssl
 import datetime
 import subprocess
+import threading
 
 from . import config
 from . import parser
 from . import handler
-from . import sender
-from . import manager
 
 CONNECTION_TIMEOUT = 30
 REBOOT_TIMEOUT = 6
@@ -20,72 +19,69 @@ REBOOT_TIMEOUT = 6
 class ShutdownException(Exception):
     pass
 
-def main():
-    logging.basicConfig(format=config.LOG_FORMAT, level=config.LOG_LEVEL)
+class Client(threading.Thread):
+    def __init__(self, manager, sender):
+        threading.Thread.__init__(self)
+        self.manager = manager
+        self.sender = sender
 
-    start = datetime.datetime.now()
+    def run(self):
+        start = datetime.datetime.now()
 
-    _parser = parser.Parser()
-    _sender = sender.Sender()
+        _parser = parser.Parser()
+        _handler = handler.Handler(self.manager)
 
-    _manager = manager.Manager(_sender)
-    _handler = handler.Handler(_manager)
+        while True:
+            client = None
+            try:
+                address = (config.HOST, config.PORT)
+                logging.info('connecting to %s (secure: %s)', address, config.SSL_VERIFY)
 
-    _manager.start_default()
-    _sender.daemon = True
-    _sender.start()
+                connection = socket.create_connection(address, CONNECTION_TIMEOUT)
+                connection.settimeout(CONNECTION_TIMEOUT)
 
-    while True:
-        client = None
-        try:
-            address = (config.HOST, config.PORT)
-            logging.info('connecting to %s (secure: %s)', address, config.SSL_VERIFY)
+                ssl_context = ssl.create_default_context()
+                if not config.SSL_VERIFY:
+                    ssl_context.check_hostname = False
+                    ssl_context.verify_mode = ssl.CERT_NONE
+                client = ssl_context.wrap_socket(connection, server_hostname=address[0])
 
-            connection = socket.create_connection(address, CONNECTION_TIMEOUT)
-            connection.settimeout(CONNECTION_TIMEOUT)
+                logging.info('authenticating')
+                self.sender.socket = client
+                self.manager.authenticate()
 
-            ssl_context = ssl.create_default_context()
-            if not config.SSL_VERIFY:
-                ssl_context.check_hostname = False
-                ssl_context.verify_mode = ssl.CERT_NONE
-            client = ssl_context.wrap_socket(connection, server_hostname=address[0])
+                while True:
+                    start = datetime.datetime.now()
+                    data = client.recv(128)
+                    if not data:
+                        raise ShutdownException()
+                    _parser.feed(data)
+                    parsed = _parser.parse()
+                    for message in parsed:
+                        _handler.handle(message)
+                    if not self.sender.socket:
+                        raise ShutdownException()
 
-            logging.info('authenticating')
-            _sender.socket = client
-            _manager.authenticate()
+            except socket.error as err:
+                logging.error('client socket error')
+                logging.error(err)
+            except ShutdownException as err:
+                logging.critical('server shutdown')
+            finally:
+                if client:
+                    client.close()
 
-            while True:
-                start = datetime.datetime.now()
-                data = client.recv(128)
-                if not data:
-                    raise ShutdownException()
-                _parser.feed(data)
-                parsed = _parser.parse()
-                for message in parsed:
-                    _handler.handle(message)
-                if not _sender.socket:
-                    raise ShutdownException()
+            restarting = False
+            elapsed = datetime.datetime.now() - start
+            if elapsed > datetime.timedelta(hours=REBOOT_TIMEOUT):
+                restarting = self.reboot()
+            if not restarting:
+                time.sleep(random.randint(0, 9))
+            else:
+                return
 
-        except socket.error as err:
-            logging.error('client socket error')
-            logging.error(err)
-        except ShutdownException as err:
-            logging.critical('server shutdown')
-        finally:
-            if client:
-                client.close()
-
-        restarting = False
-        elapsed = datetime.datetime.now() - start
-        if elapsed > datetime.timedelta(hours=REBOOT_TIMEOUT):
-            restarting = reboot()
-        if not restarting:
-            time.sleep(random.randint(0, 9))
-        else:
-            return
-
-def reboot():
-    return subprocess.call('reboot', shell=True) == 0
+    def reboot(self):
+        return subprocess.call('reboot', shell=True) == 0
 
 if __name__ == '__main__':
     main()

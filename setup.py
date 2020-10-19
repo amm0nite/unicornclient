@@ -28,7 +28,7 @@ setup(
     classifiers      = CLASSIFIERS,
     packages         = find_packages(),
     install_requires = ['paho-mqtt'],
-    entry_points     = {'console_scripts': ['unicornclient=unicornclient.client:main']}
+    entry_points     = {'console_scripts': ['unicornclient=unicornclient.agent:main']}
 )
 
 
