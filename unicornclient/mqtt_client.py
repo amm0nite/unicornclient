@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 
 import logging
 import threading
@@ -20,8 +21,10 @@ class MQTTClient(threading.Thread):
         client.loop_forever()
 
     def on_connect(self, client, userdata, flags, rc):
-        logging.info("MQTT Connected with result code "+str(rc))
+        # pylint: disable=unused-argument
+        logging.info("MQTT Connected with result code %s", str(rc))
         #client.subscribe("$SYS/#")
 
     def on_message(self, client, userdata, msg):
-        logging.debug(msg.topic+" "+str(msg.payload))
+        # pylint: disable=unused-argument
+        logging.debug("%s %s", msg.topic, str(msg.payload))

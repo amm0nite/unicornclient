@@ -82,6 +82,3 @@ class Client(threading.Thread):
 
     def reboot(self):
         return subprocess.call('reboot', shell=True) == 0
-
-if __name__ == '__main__':
-    main()
