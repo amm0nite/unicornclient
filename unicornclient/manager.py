@@ -15,11 +15,14 @@ class StopRoutineException(Exception):
     pass
 
 class Manager():
-    def __init__(self, sender):
+    def __init__(self):
         logging.info('creating manager')
-        self.sender = sender
         self.mission = mission.Mission(self)
         self.threads = {}
+        self.sender = None
+
+    def set_sender(self, sender):
+        self.sender = sender
 
     def start_default(self):
         self.start_routines(DEFAULT_ROUTINES)

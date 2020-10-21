@@ -5,8 +5,16 @@ import logging
 class Sender(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.socket = None
+        self.daemon = True
         self.queue = queue.Queue()
+        self.client = None
+        self.mqtt_client = None
+
+    def set_client(self, client):
+        self.client = client
+
+    def set_mqtt_client(self, mqtt_client):
+        self.mqtt_client = mqtt_client
 
     def send(self, message):
         self.queue.put(message)
@@ -18,12 +26,12 @@ class Sender(threading.Thread):
             self.queue.task_done()
 
     def send_one(self, message):
-        if not self.socket:
+        if not self.client.socket:
             return
 
         try:
-            self.socket.sendall(message.encode())
+            self.client.socket.sendall(message.encode())
         except OSError as err:
             logging.error('sender error')
             logging.error(err)
-            self.socket = None
+            self.client.socket = None

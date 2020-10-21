@@ -13,17 +13,21 @@ class Agent():
 
     def main(self):
         _sender = sender.Sender()
-        _manager = manager.Manager(_sender)
-        _manager.start_default()
-
-        _sender.daemon = True
-        _sender.start()
-
-        _client = client.Client(_manager, _sender)
-        _client.start()
-
+        _manager = manager.Manager()
+        _client = client.Client()
         _mqtt_client = mqtt_client.MQTTClient()
+
+        _client.set_manager(_manager)
+        _mqtt_client.set_manager(_manager)
+
+        _sender.set_client(_client)
+        _sender.set_mqtt_client(_mqtt_client)
+        _manager.set_sender(_sender)
+
+        _sender.start()
+        _client.start()
         _mqtt_client.start()
+        _manager.start_default()
 
 
 if __name__ == '__main__':

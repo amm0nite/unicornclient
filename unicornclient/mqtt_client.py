@@ -11,8 +11,15 @@ MQTT_KEEP_ALIVE = 60
 class MQTTClient(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        self.manager = None
+
+    def set_manager(self, manager):
+        self.manager = manager
 
     def run(self):
+        if not config.MQTT_HOST:
+            return
+
         client = mqtt.Client()
         client.on_connect = self.on_connect
         client.on_message = self.on_message

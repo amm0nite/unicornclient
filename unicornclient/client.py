@@ -20,10 +20,13 @@ class ShutdownException(Exception):
     pass
 
 class Client(threading.Thread):
-    def __init__(self, manager, sender):
+    def __init__(self):
         threading.Thread.__init__(self)
+        self.socket = None
+        self.manager = None
+
+    def set_manager(self, manager):
         self.manager = manager
-        self.sender = sender
 
     def run(self):
         start = datetime.datetime.now()
@@ -47,7 +50,7 @@ class Client(threading.Thread):
                 client = ssl_context.wrap_socket(connection, server_hostname=address[0])
 
                 logging.info('authenticating')
-                self.sender.socket = client
+                self.socket = client
                 self.manager.authenticate()
 
                 while True:
@@ -59,7 +62,7 @@ class Client(threading.Thread):
                     parsed = _parser.parse()
                     for message in parsed:
                         _handler.handle(message)
-                    if not self.sender.socket:
+                    if not self.socket:
                         raise ShutdownException()
 
             except socket.error as err:
