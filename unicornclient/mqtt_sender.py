@@ -1,6 +1,5 @@
 import queue
 import threading
-import logging
 
 class MQTTSender(threading.Thread):
     def __init__(self):
