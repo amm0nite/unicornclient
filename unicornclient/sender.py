@@ -8,13 +8,9 @@ class Sender(threading.Thread):
         self.daemon = True
         self.queue = queue.Queue()
         self.client = None
-        self.mqtt_client = None
 
     def set_client(self, client):
         self.client = client
-
-    def set_mqtt_client(self, mqtt_client):
-        self.mqtt_client = mqtt_client
 
     def send(self, message):
         self.queue.put(message)

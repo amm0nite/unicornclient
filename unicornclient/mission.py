@@ -10,6 +10,9 @@ class Mission():
     def send(self, msg):
         self.manager.sender.send(msg)
 
+    def publish(self, topic, msg):
+        self.manager.mqtt_sender.publish(topic, msg)
+
     def post(self, name, data):
         msg = message.Message({'type': 'mission', 'name': name})
         if isinstance(data, dict):

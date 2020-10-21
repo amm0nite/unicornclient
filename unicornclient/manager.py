@@ -20,9 +20,13 @@ class Manager():
         self.mission = mission.Mission(self)
         self.threads = {}
         self.sender = None
+        self.mqtt_sender = None
 
     def set_sender(self, sender):
         self.sender = sender
+
+    def set_mqtt_sender(self, mqtt_sender):
+        self.mqtt_sender = mqtt_sender
 
     def start_default(self):
         self.start_routines(DEFAULT_ROUTINES)

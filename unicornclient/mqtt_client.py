@@ -12,6 +12,7 @@ class MQTTClient(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.manager = None
+        self.client = None
 
     def set_manager(self, manager):
         self.manager = manager
@@ -20,12 +21,12 @@ class MQTTClient(threading.Thread):
         if not config.MQTT_HOST:
             return
 
-        client = mqtt.Client()
-        client.on_connect = self.on_connect
-        client.on_message = self.on_message
+        self.client = mqtt.Client()
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
 
-        client.connect(config.MQTT_HOST, config.MQTT_PORT, MQTT_KEEP_ALIVE)
-        client.loop_forever()
+        self.client.connect(config.MQTT_HOST, config.MQTT_PORT, MQTT_KEEP_ALIVE)
+        self.client.loop_forever()
 
     def on_connect(self, client, userdata, flags, rc):
         # pylint: disable=unused-argument
