@@ -7,19 +7,21 @@ class Mission():
     def __init__(self, manager):
         self.manager = manager
 
-    def send(self, msg):
+    def send(self, msg: message.Message):
         self.manager.sender.send(msg)
 
-    def publish(self, topic, msg):
-        self.manager.mqtt_sender.publish(topic, msg)
+    def publish(self, topic, data):
+        self.manager.mqtt_sender.publish(topic, self.serialize(data))
 
     def post(self, name, data):
         msg = message.Message({'type': 'mission', 'name': name})
-        if isinstance(data, dict):
-            msg.set_body(json.dumps(data).encode())
-        else:
-            msg.set_body(data)
+        msg.set_body(self.serialize(data))
         self.send(msg)
+
+    def serialize(self, data):
+        if isinstance(data, dict):
+            data = json.dumps(data).encode()
+        return data
 
     def forward(self, name, task):
         self.manager.forward(name, task)
