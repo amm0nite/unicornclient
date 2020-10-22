@@ -33,7 +33,9 @@ class Agent():
         _mqtt_client.start()
         _manager.start_default()
 
-
-if __name__ == '__main__':
+def main():
     agent = Agent()
     agent.main()
+
+if __name__ == '__main__':
+    main()
