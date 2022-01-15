@@ -9,11 +9,8 @@ curl https://raw.githubusercontent.com/amm0nite/unicornclient/master/install/mai
 ### Optional dependencies
 ```
 pip3 install unicornhat
-```
-```
+pip3 install microdotphat
 pip3 install picamera
-```
-```
 pip3 install yoctopuce
 ```
 ## Docker image
