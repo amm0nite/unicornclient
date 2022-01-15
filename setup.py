@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# pylint: disable=W0122, E0602
+# pylint: disable=exec-used,undefined-variable
 
 from setuptools import setup, find_packages
 

@@ -1,4 +1,4 @@
-# pylint: disable=R0912
+# pylint: disable=too-many-branches
 
 import socket
 import time

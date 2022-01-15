@@ -1,4 +1,4 @@
-# pylint: disable=W0122
+# pylint: disable=exec-used
 
 import os
 import logging

@@ -1,2 +1,2 @@
 [MESSAGES CONTROL]
-disable=C0111, I0011, R0913, R0201, C0301, C0325, R0903, R0801
+disable=missing-docstring,locally-disabled,too-many-arguments,no-self-use,line-too-long,superfluous-parens,too-few-public-methods,duplicate-code
