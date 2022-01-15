@@ -82,7 +82,7 @@ class Manager():
     def __find_code(self, name):
         routine_path = os.path.join(os.path.dirname(__file__), 'routines', name + '.py')
         try:
-            with open(routine_path, 'r') as routine_file:
+            with open(routine_path, 'r', encoding='utf8') as routine_file:
                 return routine_file.read()
         except FileNotFoundError as err:
             logging.error(err)

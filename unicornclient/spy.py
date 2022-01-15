@@ -9,7 +9,7 @@ from . import config
 def _read_file(file_path):
     if not os.path.exists(file_path):
         return None
-    with open(file_path, 'r') as info_file:
+    with open(file_path, 'r', encoding='utf8') as info_file:
         return info_file.read().strip()
 
 def get_machine_id():
@@ -17,7 +17,7 @@ def get_machine_id():
 
 def get_serial():
     # Extract serial from cpuinfo file
-    with open(config.PROC_PATH + '/cpuinfo', 'r') as cpuinfo_file:
+    with open(config.PROC_PATH + '/cpuinfo', 'r', encoding='utf8') as cpuinfo_file:
         for line in cpuinfo_file:
             if line[0:6] == 'Serial':
                 return line[10:26]
@@ -41,7 +41,7 @@ def get_macs():
     for interface in interfaces:
         if interface == 'lo' or interface.startswith('br') or interface.startswith('docker') or interface.startswith('veth'):
             continue
-        with open(os.path.join(root_dir, interface, 'address'), 'r') as interface_file:
+        with open(os.path.join(root_dir, interface, 'address'), 'r', encoding='utf8') as interface_file:
             result.append({'name': interface, 'address': interface_file.read().strip()})
     return result
 
@@ -84,7 +84,7 @@ def get_written_kbytes():
         written = _read_file(os.path.join(device_path, stat_file))
         if written:
             data = {} if not data else data
-            data[stat_file.split('_')[0]] = int(written)
+            data[stat_file.split('_', maxsplit=1)[0]] = int(written)
     return data
 
 def get_uptime():
@@ -107,14 +107,14 @@ def save_secret(secret):
         logging.warning(err)
         return False
 
-    with open(path, 'w') as secret_file:
+    with open(path, 'w', encoding='utf8') as secret_file:
         secret_file.write(secret)
         return True
 
 def load_secret():
     path = config.SECRET_PATH
     try:
-        with open(path, 'r') as secret_file:
+        with open(path, 'r', encoding='utf8') as secret_file:
             secret = secret_file.read()
             return secret.strip()
     except FileNotFoundError as err:

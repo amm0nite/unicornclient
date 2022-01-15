@@ -68,7 +68,7 @@ class Client(threading.Thread):
             except socket.error as err:
                 logging.error('client socket error')
                 logging.error(err)
-            except ShutdownException as err:
+            except ShutdownException:
                 logging.critical('server shutdown')
             finally:
                 if client:
