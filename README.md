@@ -23,7 +23,7 @@ docker run amm0nite/unicornclient
 ## Development
 Create virtual env
 ```
-virtualenv venv
+virtualenv venv --python=python3.9
 ```
 Activate virtual env
 ```
@@ -32,4 +32,8 @@ source venv/bin/activate
 Install requirements
 ```
 pip3 install -r requirements.txt
+```
+Install pylint
+```
+pip3 install pylint
 ```
