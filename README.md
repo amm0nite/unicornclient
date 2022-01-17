@@ -7,9 +7,13 @@
 curl https://raw.githubusercontent.com/amm0nite/unicornclient/master/install/main.sh | bash -
 ```
 ### Optional dependencies
+
+Install with apt:
 ```
-pip3 install unicornhat
-pip3 install microdotphat
+apt install python3-microdotphat
+```
+Install with pip:
+```
 pip3 install picamera
 pip3 install yoctopuce
 ```
