@@ -16,6 +16,7 @@ apt-get update
 apt-get install -y supervisor python3-dev python3-pip
 
 apt-get install -y python3-smbus || echo "python3-smbus not installed"
+apt-get install -y python3-numpy || echo "python3-numpy not installed"
 
 # Install the client
 
