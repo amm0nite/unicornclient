@@ -1,4 +1,5 @@
 from unicornclient import spy
+from unicornclient import spy_volt
 from unicornclient import routine
 from unicornclient import message
 from unicornclient import version
@@ -33,5 +34,6 @@ class Routine(routine.Routine):
             'signal_level': spy.get_signal_level(),
             'written_kbytes': spy.get_written_kbytes(),
             'cpu_frequency': spy.get_cpu_frequency(),
+            'under_voltage': spy_volt.get_under_voltage_status(),
         }
         return status
