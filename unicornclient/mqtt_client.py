@@ -1,5 +1,6 @@
 # pylint: disable=invalid-name
 
+import time
 import logging
 import threading
 import paho.mqtt.client as mqtt
@@ -13,6 +14,7 @@ class MQTTClient(threading.Thread):
         threading.Thread.__init__(self)
         self.manager = None
         self.client = None
+        self.backoff = 1
 
     def set_manager(self, manager):
         self.manager = manager
@@ -21,16 +23,28 @@ class MQTTClient(threading.Thread):
         if not config.MQTT_HOST:
             return
 
-        self.client = mqtt.Client()
-        self.client.on_connect = self.on_connect
-        self.client.on_message = self.on_message
+        while True:
+            try:
+                logging.info("MQTT Connecting")
+                self.client = mqtt.Client()
+                self.client.on_connect = self.on_connect
+                self.client.on_message = self.on_message
 
-        self.client.connect(config.MQTT_HOST, config.MQTT_PORT, MQTT_KEEP_ALIVE)
-        self.client.loop_forever()
+                self.client.connect(config.MQTT_HOST, config.MQTT_PORT, MQTT_KEEP_ALIVE)
+                self.client.loop_forever(retry_first_connection=True)
+            except OSError as err:
+                self.client.disconnect()
+                logging.info("MQTT error")
+                logging.error(err)
+            
+            self.backoff *= 2
+            logging.info(f"MQTT Retry in {self.backoff}s")
+            time.sleep(self.backoff)
 
     def on_connect(self, client, userdata, flags, rc):
         # pylint: disable=unused-argument
         logging.info("MQTT Connected with result code %s", str(rc))
+        self.backoff = 1
         #client.subscribe("$SYS/#")
 
     def on_message(self, client, userdata, msg):

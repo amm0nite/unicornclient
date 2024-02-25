@@ -2,7 +2,6 @@
 
 import socket
 import time
-import random
 import logging
 import ssl
 import datetime
@@ -24,6 +23,7 @@ class Client(threading.Thread):
         threading.Thread.__init__(self)
         self.socket = None
         self.manager = None
+        self.backoff = 1
 
     def set_manager(self, manager):
         self.manager = manager
@@ -38,7 +38,7 @@ class Client(threading.Thread):
             client = None
             try:
                 address = (config.HOST, config.PORT)
-                logging.info('connecting to %s (secure: %s)', address, config.SSL_VERIFY)
+                logging.info('client connecting to %s (secure: %s)', address, config.SSL_VERIFY)
 
                 connection = socket.create_connection(address, CONNECTION_TIMEOUT)
                 connection.settimeout(CONNECTION_TIMEOUT)
@@ -49,9 +49,10 @@ class Client(threading.Thread):
                     ssl_context.verify_mode = ssl.CERT_NONE
                 client = ssl_context.wrap_socket(connection, server_hostname=address[0])
 
-                logging.info('authenticating')
+                logging.info('client authenticating')
                 self.socket = client
                 self.manager.authenticate()
+                self.backoff = 1
 
                 while True:
                     start = datetime.datetime.now()
@@ -79,7 +80,9 @@ class Client(threading.Thread):
             if elapsed > datetime.timedelta(hours=REBOOT_TIMEOUT):
                 restarting = self.reboot()
             if not restarting:
-                time.sleep(random.randint(0, 9))
+                self.backoff *= 2
+                logging.info(f'client retrying in {self.backoff}s')
+                time.sleep(self.backoff)
             else:
                 return
 
