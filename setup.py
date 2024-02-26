@@ -2,6 +2,7 @@
 # pylint: disable=exec-used,undefined-variable
 
 from setuptools import setup, find_packages
+from unicornclient.version import VERSION
 
 # https://pypi.python.org/pypi?%3Aaction=list_classifiers
 CLASSIFIERS = ['Development Status :: 3 - Alpha',
@@ -12,8 +13,9 @@ CLASSIFIERS = ['Development Status :: 3 - Alpha',
                'Topic :: Software Development',
                'Topic :: System :: Hardware']
 
-with open('unicornclient/version.py', 'r') as version_file:
-    exec(version_file.read())
+def read_requirements():
+    with open('requirements.txt') as req:
+        return req.read().splitlines()
 
 setup(
     name             = 'unicornclient',
@@ -27,7 +29,7 @@ setup(
     url              = 'https://github.com/amm0nite/unicornclient',
     classifiers      = CLASSIFIERS,
     packages         = find_packages(),
-    install_requires = ['paho-mqtt'],
+    install_requires = read_requirements(),
     entry_points     = {'console_scripts': ['unicornclient=unicornclient.agent:main']}
 )
 
