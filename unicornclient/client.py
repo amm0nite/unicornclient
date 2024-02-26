@@ -81,7 +81,7 @@ class Client(threading.Thread):
                 restarting = self.reboot()
             if not restarting:
                 self.backoff *= 2
-                logging.info(f'client retrying in {self.backoff}s')
+                logging.info('client retrying in %ds', self.backoff)
                 time.sleep(self.backoff)
             else:
                 return

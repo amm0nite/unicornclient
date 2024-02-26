@@ -1,5 +1,3 @@
-# pylint: disable=invalid-name
-
 import time
 import logging
 import threading
@@ -25,8 +23,8 @@ class MQTTClient(threading.Thread):
 
         while True:
             try:
-                logging.info("MQTT Connecting")
-                self.client = mqtt.Client()
+                logging.info('MQTT Connecting')
+                self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION1)
                 self.client.on_connect = self.on_connect
                 self.client.on_message = self.on_message
 
@@ -34,16 +32,16 @@ class MQTTClient(threading.Thread):
                 self.client.loop_forever(retry_first_connection=True)
             except OSError as err:
                 self.client.disconnect()
-                logging.info("MQTT error")
+                logging.info('MQTT error')
                 logging.error(err)
-            
+
             self.backoff *= 2
-            logging.info(f"MQTT Retry in {self.backoff}s")
+            logging.info('MQTT Retry in %ds', self.backoff)
             time.sleep(self.backoff)
 
     def on_connect(self, client, userdata, flags, rc):
         # pylint: disable=unused-argument
-        logging.info("MQTT Connected with result code %s", str(rc))
+        logging.info('MQTT Connected with result code %s', str(rc))
         self.backoff = 1
         #client.subscribe("$SYS/#")
 
